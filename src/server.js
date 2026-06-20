@@ -25,9 +25,24 @@ function sendJson(res, status, body) {
 }
 
 function safeJoin(base, parts) {
-  const target = path.resolve(base, ...parts);
-  if (!target.startsWith(path.resolve(base))) return null;
+  const root = path.resolve(base);
+  const target = path.resolve(root, ...parts);
+  const relative = path.relative(root, target);
+  if (relative.startsWith('..') || path.isAbsolute(relative)) return null;
   return target;
+}
+
+function decodePathSegments(pathname) {
+  try {
+    return pathname.split('/').filter(Boolean).map(decodeURIComponent);
+  } catch {
+    return null;
+  }
+}
+
+function hasUnsafePathSegment(pathname) {
+  const segments = decodePathSegments(pathname);
+  return !segments || segments.some((segment) => segment === '.' || segment === '..');
 }
 
 function readBody(req) {
@@ -71,6 +86,27 @@ function artifactContext(project, artifact, version, page = 'index.html') {
     artifact,
     version,
     page
+  );
+}
+
+function artifactVersionContext(project, artifact, version) {
+  return one(
+    `
+      SELECT
+        p.slug project_slug,
+        a.id artifact_id,
+        a.slug artifact_slug,
+        v.id version_id,
+        v.version_slug,
+        v.filesystem_path
+      FROM projects p
+      JOIN artifacts a ON a.project_id = p.id
+      JOIN artifact_versions v ON v.artifact_id = a.id
+      WHERE p.slug = ? AND a.slug = ? AND v.version_slug = ?
+    `,
+    project,
+    artifact,
+    version
   );
 }
 
@@ -136,8 +172,12 @@ async function uploadAttachment(ctx, attachment) {
 }
 
 async function route(req, res) {
+  const rawPathname = (req.url || '/').split('?')[0] || '/';
+  if (hasUnsafePathSegment(rawPathname)) return send(res, 404, 'Not found');
+
   const url = new URL(req.url, `http://${req.headers.host || 'localhost'}`);
-  const parts = url.pathname.split('/').filter(Boolean).map(decodeURIComponent);
+  const parts = decodePathSegments(url.pathname);
+  if (!parts) return send(res, 404, 'Not found');
   const method = req.method === 'HEAD' ? 'GET' : req.method;
 
   if (method === 'GET' && url.pathname === '/healthz') {
@@ -244,12 +284,13 @@ async function route(req, res) {
   if (method === 'GET' && parts[0] === 'artifact-frame') {
     const [project, artifact, version, ...pageParts] = parts.slice(1);
     const page = pageParts.join('/') || 'index.html';
-    const ctx = artifactContext(project, artifact, version, page);
+    const isHtml = path.extname(page).toLowerCase() === '.html';
+    const ctx = isHtml ? artifactContext(project, artifact, version, page) : artifactVersionContext(project, artifact, version);
     if (!ctx) return send(res, 404, 'Artifact page not found');
     const filePath = safeJoin(ctx.filesystem_path, [page]);
     if (!filePath || !fs.existsSync(filePath) || fs.statSync(filePath).isDirectory()) return send(res, 404, 'Artifact file not found');
     const raw = fs.readFileSync(filePath);
-    const body = path.extname(filePath).toLowerCase() === '.html' ? injectReviewClient(raw.toString('utf8')) : raw;
+    const body = isHtml ? injectReviewClient(raw.toString('utf8')) : raw;
     return send(res, 200, body, { 'content-type': contentType(filePath) });
   }
 
