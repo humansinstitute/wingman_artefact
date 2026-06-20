@@ -10,19 +10,22 @@ app.innerHTML = `
   <div class="app">
     <header class="topbar">
       <div class="brand">
-        <div class="brand-title"></div>
-        <div class="brand-subtitle">Private by default</div>
+        <div class="brand-mark" aria-hidden="true">A</div>
+        <div>
+          <div class="brand-title"></div>
+          <div class="brand-subtitle">Rendered review surfaces</div>
+        </div>
       </div>
       <div class="selectors">
-        <select id="project"></select>
-        <select id="artifact"></select>
-        <select id="version"></select>
-        <select id="page"></select>
+        <label><span>Project</span><select id="project"></select></label>
+        <label><span>Artifact</span><select id="artifact"></select></label>
+        <label><span>Version</span><select id="version"></select></label>
+        <label><span>Page</span><select id="page"></select></label>
       </div>
       <div class="toolbar">
         <span class="status" id="status"></span>
-        <button class="icon-button" id="copy" title="Copy current artifact link" aria-label="Copy current artifact link">⧉</button>
-        <button class="icon-button" id="commentsToggle" title="Open comments" aria-label="Open comments">☰</button>
+        <button class="icon-button" id="copy" title="Copy current artifact link" aria-label="Copy current artifact link"><span aria-hidden="true">[]</span></button>
+        <button class="icon-button" id="commentsToggle" title="Open comments" aria-label="Open comments"><span aria-hidden="true">::</span></button>
       </div>
     </header>
     <main class="workspace">
@@ -126,7 +129,9 @@ function framePath() {
 function setRoute() {
   history.replaceState(null, '', artifactPath());
   els.frame.src = framePath();
-  els.status.textContent = rowsForSelected().find((row) => row.page === state.selected.page)?.accessMode || 'private';
+  const accessMode = rowsForSelected().find((row) => row.page === state.selected.page)?.accessMode || 'private';
+  els.status.textContent = accessMode;
+  els.status.dataset.mode = accessMode;
   els.panelMeta.textContent = `${state.selected.project}/${state.selected.artifact}/${state.selected.version}/${state.selected.page}`;
   loadComments();
 }
@@ -153,16 +158,24 @@ async function loadComments() {
   const data = await response.json();
   const comments = data.comments || [];
   if (!comments.length) {
-    els.comments.innerHTML = '<div class="empty">No comments on this page/version yet.</div>';
+    els.comments.innerHTML = `
+      <div class="empty">
+        <div class="empty-mark" aria-hidden="true"></div>
+        <strong>No comments on this page/version yet.</strong>
+        <span>Right-click an element in the preview to leave anchored feedback.</span>
+      </div>
+    `;
     notifyFrame([]);
     return;
   }
   els.comments.innerHTML = comments
-    .map(
-      (comment) => `
-        <article class="comment ${comment.status === 'resolved' ? 'resolved' : ''}">
+    .map((comment, index) => {
+      const tone = ['teal', 'amber', 'blue', 'rose'][index % 4];
+      return `
+        <article class="comment ${comment.status === 'resolved' ? 'resolved' : ''}" data-tone="${tone}">
           <div class="comment-top">
-            <span>${new Date(comment.created_at).toLocaleString()} · ${comment.status}</span>
+            <span class="comment-state">${comment.status}</span>
+            <span>${new Date(comment.created_at).toLocaleString()}</span>
             ${
               comment.status === 'open'
                 ? `<button class="resolve" data-resolve="${comment.id}">Resolve</button>`
@@ -178,8 +191,8 @@ async function loadComments() {
             )
             .join('')}
         </article>
-      `
-    )
+      `;
+    })
     .join('');
   notifyFrame(comments);
 }
@@ -241,6 +254,7 @@ els.page.addEventListener('change', () => {
 els.copy.addEventListener('click', async () => {
   await navigator.clipboard.writeText(new URL(artifactPath(), location.origin).toString());
   els.status.textContent = 'link copied';
+  els.status.dataset.mode = 'copied';
   setTimeout(() => setRoute(), 900);
 });
 

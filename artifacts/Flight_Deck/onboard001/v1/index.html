@@ -3,31 +3,67 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Flight Deck Onboarding v1</title>
+  <title>Flight Deck Scope Onboarding v1</title>
   <link rel="stylesheet" href="./style.css">
 </head>
 <body>
-  <main class="phone" data-artifact-node-id="v1-shell">
-    <section class="hero" data-artifact-node-id="v1-hero">
-      <p class="eyebrow">Wingman Flight Deck</p>
-      <h1>Start from the thread that matters.</h1>
-      <p>Tasks, documents, and agent work stay tied to the conversation that created them.</p>
+  <main class="page" data-artifact-node-id="v1-shell">
+    <header class="masthead" data-artifact-node-id="v1-masthead">
+      <div>
+        <p class="eyebrow">Flight Deck workspace setup</p>
+        <h1>Create scopes before work starts</h1>
+      </div>
+      <span class="version">v1</span>
+    </header>
+
+    <section class="layout">
+      <aside class="sidebar" data-artifact-node-id="v1-scope-list">
+        <div class="sidebar-head">New workspace</div>
+        <button class="scope active">Company HQ</button>
+        <button class="scope">Product</button>
+        <button class="scope">Support</button>
+        <button class="scope add">+ Add scope</button>
+      </aside>
+
+      <section class="card" data-artifact-node-id="v1-flow-card">
+        <div class="card-head">
+          <div>
+            <h2>Scope onboarding</h2>
+            <p>Set the basic operating lanes for a new Flight Deck workspace.</p>
+          </div>
+          <span class="state">Manual setup</span>
+        </div>
+
+        <ol class="steps" data-artifact-node-id="v1-steps">
+          <li>
+            <span class="number">1</span>
+            <div>
+              <strong>Name each scope</strong>
+              <p>Start with a workspace-wide default, then add business areas as separate scopes.</p>
+            </div>
+          </li>
+          <li>
+            <span class="number">2</span>
+            <div>
+              <strong>Create starter channels</strong>
+              <p>Add chat, tasks, docs, and approvals channels one scope at a time.</p>
+            </div>
+          </li>
+          <li>
+            <span class="number">3</span>
+            <div>
+              <strong>Invite people</strong>
+              <p>Assign collaborators after channels exist so they land in the right context.</p>
+            </div>
+          </li>
+        </ol>
+
+        <div class="actions" data-artifact-node-id="v1-actions">
+          <button class="primary">Create first scope</button>
+          <button class="secondary">Import later</button>
+        </div>
+      </section>
     </section>
-    <section class="steps" data-artifact-node-id="v1-steps">
-      <article>
-        <strong>1</strong>
-        <span>Pick a workspace and channel.</span>
-      </article>
-      <article>
-        <strong>2</strong>
-        <span>Attach a document or task brief.</span>
-      </article>
-      <article>
-        <strong>3</strong>
-        <span>Dispatch the right agent.</span>
-      </article>
-    </section>
-    <button data-artifact-node-id="v1-primary-action">Open Flight Deck</button>
   </main>
 </body>
 </html>

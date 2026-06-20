@@ -3,26 +3,77 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Flight Deck Onboarding v2</title>
+  <title>Flight Deck Scope Onboarding v2</title>
   <link rel="stylesheet" href="./style.css">
 </head>
 <body>
-  <main class="screen" data-artifact-node-id="v2-shell">
-    <nav data-artifact-node-id="v2-nav">
-      <span>Flight Deck</span>
-      <button>Skip</button>
-    </nav>
-    <section class="hero" data-artifact-node-id="v2-hero">
-      <div class="preview">
-        <div class="message">Build the Artifact WApp MVP</div>
-        <div class="status">Implementation pipeline running</div>
+  <main class="page" data-artifact-node-id="v2-shell">
+    <header class="topline" data-artifact-node-id="v2-topline">
+      <div>
+        <p class="eyebrow">Flight Deck workspace setup</p>
+        <h1>Start with scope templates, then tune the workspace</h1>
       </div>
-      <h1>Turn agent work into reviewable surfaces.</h1>
-      <p>Open generated HTML, mark exact elements, and keep each version's feedback separate.</p>
-    </section>
-    <section class="actions" data-artifact-node-id="v2-actions">
-      <button class="primary" data-artifact-node-id="v2-primary-action">Review first artifact</button>
-      <button class="secondary">See how comments work</button>
+      <span class="version">v2 improved</span>
+    </header>
+
+    <section class="workspace">
+      <aside class="rail" data-artifact-node-id="v2-template-rail">
+        <div class="rail-title">Recommended scopes</div>
+        <button class="template selected">
+          <span>Company HQ</span>
+          <small>People, announcements, decisions</small>
+        </button>
+        <button class="template">
+          <span>Product delivery</span>
+          <small>Roadmap, specs, implementation</small>
+        </button>
+        <button class="template">
+          <span>Customer operations</span>
+          <small>Support, renewals, account work</small>
+        </button>
+      </aside>
+
+      <section class="builder" data-artifact-node-id="v2-builder">
+        <div class="builder-head">
+          <div>
+            <h2>Company HQ</h2>
+            <p>Created from the operating-hub template. Adjust before launch.</p>
+          </div>
+          <button class="ghost">Preview access</button>
+        </div>
+
+        <div class="suggestions" data-artifact-node-id="v2-suggestions">
+          <article>
+            <span class="dot teal"></span>
+            <div>
+              <strong>Create default channels</strong>
+              <p>Chat, tasks, docs, decisions, approvals, and files are staged automatically.</p>
+            </div>
+          </article>
+          <article>
+            <span class="dot amber"></span>
+            <div>
+              <strong>Apply access defaults</strong>
+              <p>Owners can see all scopes. Guests only receive explicit scope-level grants.</p>
+            </div>
+          </article>
+          <article>
+            <span class="dot blue"></span>
+            <div>
+              <strong>Connect first agent workflows</strong>
+              <p>Dispatch templates are available after the first task board is created.</p>
+            </div>
+          </article>
+        </div>
+
+        <section class="launch" data-artifact-node-id="v2-launch-checklist">
+          <div>
+            <h3>Ready to launch</h3>
+            <p>3 scopes, 18 channels, owner access, and private defaults are ready.</p>
+          </div>
+          <button class="primary">Create workspace scopes</button>
+        </section>
+      </section>
     </section>
   </main>
 </body>
