@@ -190,7 +190,6 @@ async function route(req, res) {
   }
 
   if (method === 'GET' && url.pathname === '/api/catalog') {
-    scanArtifacts();
     const rows = all(`
       SELECT p.slug project, p.name projectName, a.slug artifact, a.title artifactTitle,
              v.version_slug version, v.entrypoint_path entrypoint, pg.page_path page, pg.title pageTitle,
