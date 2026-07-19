@@ -63,13 +63,13 @@ function hasUnsafePathSegment(pathname) {
   return !segments || segments.some((segment) => segment === '.' || segment === '..');
 }
 
-function readBody(req) {
+function readBody(req, maxLength = 12_000_000) {
   return new Promise((resolve, reject) => {
     let body = '';
     req.setEncoding('utf8');
     req.on('data', (chunk) => {
       body += chunk;
-      if (body.length > 12_000_000) reject(new Error('Body too large'));
+      if (body.length > maxLength) reject(new Error('Body too large'));
     });
     req.on('end', () => resolve(body ? JSON.parse(body) : {}));
     req.on('error', reject);
@@ -539,15 +539,35 @@ async function route(req, res) {
       }
     }
     if (!canManage(ctx, currentUser(req))) return sendJson(res, 403, { error: 'Project edit access required' });
-    const input = await readBody(req);
+    const input = await readBody(req, 50_000_000);
     if (!Array.isArray(input.scene?.elements) || typeof input.scene?.appState !== 'object') {
       return sendJson(res, 400, { error: 'A valid Excalidraw scene is required' });
     }
-    const saved = { scene: input.scene, updatedAt: new Date().toISOString(), updatedBy: currentUser(req)?.npub || config.ownerNpub };
-    const tempPath = `${scenePath}.tmp-${process.pid}`;
+    const versionMatch = String(version).match(/^v(\d+)$/i);
+    if (!versionMatch) return sendJson(res, 400, { error: 'Whiteboard versions must use vN slugs' });
+    const parentDir = path.dirname(ctx.filesystem_path);
+    const nextNumberStart = Number(versionMatch[1]) + 1;
+    let nextNumber = nextNumberStart;
+    let nextVersion = `v${nextNumber}`;
+    while (fs.existsSync(path.join(parentDir, nextVersion))) {
+      nextNumber += 1;
+      nextVersion = `v${nextNumber}`;
+    }
+    const nextPath = safeJoin(parentDir, [nextVersion]);
+    if (!nextPath) return sendJson(res, 400, { error: 'Invalid next whiteboard path' });
+    fs.cpSync(ctx.filesystem_path, nextPath, { recursive: true, errorOnExist: true });
+    const nextScenePath = safeJoin(nextPath, ['excalidraw-scene.json']);
+    const saved = {
+      scene: input.scene,
+      updatedAt: new Date().toISOString(),
+      updatedBy: currentUser(req)?.npub || config.ownerNpub,
+      parentVersion: version
+    };
+    const tempPath = `${nextScenePath}.tmp-${process.pid}`;
     fs.writeFileSync(tempPath, JSON.stringify(saved, null, 2));
-    fs.renameSync(tempPath, scenePath);
-    return sendJson(res, 200, { ok: true, updatedAt: saved.updatedAt });
+    fs.renameSync(tempPath, nextScenePath);
+    scanArtifacts();
+    return sendJson(res, 201, { ok: true, version: nextVersion, updatedAt: saved.updatedAt, parentVersion: version });
   }
 
   if (method === 'GET' && url.pathname === '/api/catalog') {
