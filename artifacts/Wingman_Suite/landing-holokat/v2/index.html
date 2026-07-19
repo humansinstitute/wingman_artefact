@@ -1,0 +1,130 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Wingman Suite</title>
+  <meta name="description" content="Wingman Suite is a self-hosted operations stack for orchestrating AI agents, work, apps, and teams.">
+  <meta property="og:title" content="Wingman Suite">
+  <meta property="og:description" content="Autopilot runs the agents. Flight Deck coordinates the people. Tower keeps the shared state. Skills make the work repeatable.">
+  <meta property="og:image" content="./wingman-suite-poster.png">
+  <link rel="stylesheet" href="./styles.css?v=11">
+</head>
+<body>
+  <header class="topbar">
+    <div class="shell topbar-inner">
+      <a class="brand" href="./index.html"><span class="mark">W</span><span>Wingman Suite</span></a>
+      <nav class="nav" aria-label="Primary">
+        <a href="./index.html" aria-current="page">Overview</a>
+        <a href="./autopilot.html">Autopilot</a>
+        <a href="./flight-deck.html">Flight Deck</a>
+        <a href="./tower.html">Tower</a>
+        <a href="./skills.html">Skills</a>
+        <a href="./teams.html">Teams</a>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+    <section class="hero">
+      <div class="shell hero-grid">
+        <div>
+          <div class="eyebrow">Autopilot-first agent operations</div>
+          <h1>Most AI stops <br class="mobile-only">at chat.<br>Wingman keeps <br class="mobile-only">going.</h1>
+          <p class="lead">Wingman runs AI agents <br class="mobile-only">and keeps humans in the loop <br class="mobile-only">across projects, apps, <br class="mobile-only">workflows, files, and teams.</p>
+          <div class="actions">
+            <a class="button" href="./autopilot.html">Start with Autopilot</a>
+            <a class="button secondary" href="./teams.html">See team flow</a>
+          </div>
+        </div>
+        <figure class="hero-visual">
+          <img src="./wingman-suite-poster.png" alt="Wingman Suite modules: Flight Deck, Autopilot, Tower, and WApps.">
+        </figure>
+      </div>
+    </section>
+
+    <section class="section white">
+      <div class="shell split">
+        <div>
+          <p class="kicker">The simple version</p>
+          <h2>A shared work system<br>for people and agents.</h2>
+        </div>
+        <p>Agents get working sessions. People get one place to review, redirect, decide, and coordinate.</p>
+      </div>
+    </section>
+
+    <section class="section" id="suite">
+      <div class="shell">
+        <p class="kicker">What each bit does</p>
+        <h2>The pieces are separate on purpose.</h2>
+        <div class="module-grid">
+          <a class="module-card autopilot" href="./autopilot.html">
+            <span class="num">01</span>
+            <strong>Autopilot</strong>
+            <p>Runs agent sessions, pipelines, triggers, managed apps, subdomains, files, and signed APIs.</p>
+          </a>
+          <a class="module-card flight" href="./flight-deck.html">
+            <span class="num">02</span>
+            <strong>Flight Deck</strong>
+            <p>Gives humans chat, tasks, docs, approvals, comments, artifacts, and project visibility.</p>
+          </a>
+          <a class="module-card tower" href="./tower.html">
+            <span class="num">03</span>
+            <strong>Tower</strong>
+            <p>Owns shared backend state, Nostr auth, Postgres, storage, graph memory, and API contracts.</p>
+          </a>
+          <a class="module-card skills" href="./skills.html">
+            <span class="num">04</span>
+            <strong>Skills</strong>
+            <p>Turn repeated agent work into durable procedures with clear tools, rules, and validation.</p>
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <section class="section white">
+      <div class="shell split">
+        <div>
+          <p class="kicker">How it works</p>
+          <h2>Work moves from intent to action to review.</h2>
+        </div>
+        <div class="flow">
+          <div class="flow-step"><b>1. Ask</b><span>A person describes a goal in chat, a task, a flow, or a pipeline run.</span></div>
+          <div class="flow-step"><b>2. Dispatch</b><span>Autopilot starts the right agent or workflow with repo, task, and context.</span></div>
+          <div class="flow-step"><b>3. Execute</b><span>The agent works in files, apps, APIs, terminals, and documents.</span></div>
+          <div class="flow-step"><b>4. Record</b><span>Tower keeps the shared state, files, comments, task updates, and graph memory.</span></div>
+          <div class="flow-step"><b>5. Review</b><span>Flight Deck shows humans what changed and what needs a decision.</span></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="shell split">
+        <div>
+          <p class="kicker">Why it matters</p>
+          <h2>It is for real work with multiple agents and multiple people.</h2>
+        </div>
+        <div class="grid">
+          <article class="card"><strong>Persistent workers</strong><p>Agents can run on an always-on machine, keep sessions, host apps, and continue beyond one chat window.</p></article>
+          <article class="card"><strong>Shared visibility</strong><p>People can see the work in tasks, docs, comments, artifacts, files, approvals, and chats.</p></article>
+          <article class="card"><strong>Team control</strong><p>Work can be assigned, reviewed, redirected, and coordinated across scopes, projects, and people.</p></article>
+        </div>
+      </div>
+    </section>
+
+    <section class="section white">
+      <div class="shell next">
+        <div>
+          <p class="kicker">First piece</p>
+          <h2>Autopilot is the engine.</h2>
+        </div>
+        <a class="button" href="./autopilot.html">Open Autopilot</a>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <div class="shell">Draft 2. Public Artifact WApp version for sharing and review.</div>
+  </footer>
+</body>
+</html>

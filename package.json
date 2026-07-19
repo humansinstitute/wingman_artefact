@@ -10,5 +10,8 @@
   },
   "engines": {
     "node": ">=25"
+  },
+  "dependencies": {
+    "nostr-tools": "^2.23.5"
   }
 }

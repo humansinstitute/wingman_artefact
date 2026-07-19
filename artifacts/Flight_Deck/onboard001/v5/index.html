@@ -1,0 +1,111 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Flight Deck Onboarding Modal v5</title>
+  <link rel="stylesheet" href="./style.css">
+</head>
+<body>
+  <main class="flightdeck-shell" data-artifact-node-id="v5-flightdeck-shell">
+    <header class="page-header" data-artifact-node-id="v5-app-header">
+      <div class="brand-lockup">
+        <span class="brand-logo" aria-hidden="true">W</span>
+        <div class="brand-copy">
+          <h1>Wingman</h1>
+          <p>Solvitur Ambulando</p>
+        </div>
+      </div>
+      <button class="avatar-chip" type="button" aria-label="Current user">PW</button>
+    </header>
+
+    <section class="app-body">
+      <nav class="sidebar" data-artifact-node-id="v5-sidebar">
+        <ul class="sidebar-nav">
+          <li class="active"><span class="sidebar-icon">#</span><span>Chat</span></li>
+          <li><span class="sidebar-icon">□</span><span>Tasks</span></li>
+          <li><span class="sidebar-icon">≡</span><span>Docs</span></li>
+          <li><span class="sidebar-icon">○</span><span>Files</span></li>
+        </ul>
+        <div class="sidebar-workspace-footer">
+          <div class="sidebar-workspace-label-row">
+            <span class="sidebar-workspace-label">Workspace</span>
+            <span class="sidebar-workspace-status">New</span>
+          </div>
+          <button class="sidebar-workspace-trigger" type="button">
+            <span class="sidebar-workspace-avatar">N</span>
+            <span class="sidebar-workspace-copy">
+              <span class="sidebar-workspace-name">New workspace</span>
+              <span class="sidebar-workspace-meta">No spaces yet</span>
+            </span>
+          </button>
+        </div>
+      </nav>
+
+      <section class="workspace-stage" data-artifact-node-id="v5-empty-workspace">
+        <div class="global-channel-bar">
+          <button class="scope-input" type="button">No scopes yet</button>
+          <span class="bar-separator">|</span>
+          <span class="empty-channel-pill">Channels will appear here</span>
+        </div>
+        <div class="empty-state">
+          <h2>New workspace</h2>
+          <p>Choose starter spaces to give this workspace its first scopes and channels.</p>
+        </div>
+      </section>
+    </section>
+
+    <div class="modal-overlay" data-artifact-node-id="v5-onboarding-overlay">
+      <section class="modal setup-modal" data-artifact-node-id="v5-onboarding-modal" aria-label="Set up workspace spaces">
+        <button class="modal-close" type="button" aria-label="Close">×</button>
+
+        <div class="modal-heading">
+          <p class="modal-eyebrow">Workspace setup</p>
+          <h2 id="template-title">Start with useful spaces</h2>
+          <p id="template-summary">Pick a template, inspect the scopes and channels it creates, then tune anything before launch.</p>
+        </div>
+
+        <div class="template-switch" data-artifact-node-id="v5-template-switch" aria-label="Workspace template">
+          <button class="switch-button active" type="button" data-template="company">Company</button>
+          <button class="switch-button" type="button" data-template="personal">Personal</button>
+        </div>
+
+        <div class="setup-grid" data-artifact-node-id="v5-template-preview">
+          <section class="scope-panel" aria-label="Scopes created by selected template">
+            <div class="panel-label">Scopes</div>
+            <div id="scope-list" class="scope-list"></div>
+          </section>
+
+          <section class="channel-panel" aria-label="Channels inside selected scope">
+            <div class="panel-label">Channels in selected scope</div>
+            <div class="selected-scope">
+              <h3 id="scope-title">Company HQ</h3>
+              <p id="scope-note">Shared operating context for company-level coordination.</p>
+            </div>
+            <div id="channel-list" class="channel-list"></div>
+            <div class="included-tools">
+              <span>Every scope and channel includes</span>
+              <div>
+                <strong>Chat</strong>
+                <strong>Task board</strong>
+                <strong>Docs</strong>
+                <strong>Files</strong>
+              </div>
+            </div>
+          </section>
+        </div>
+
+        <footer class="modal-actions" data-artifact-node-id="v5-modal-actions">
+          <p id="access-copy">Private until people or groups are granted to channels.</p>
+          <div>
+            <button class="secondary" type="button">Skip for now</button>
+            <button class="primary" type="button" id="create-button">Create company spaces</button>
+          </div>
+        </footer>
+      </section>
+    </div>
+  </main>
+
+  <script src="./script.js"></script>
+</body>
+</html>

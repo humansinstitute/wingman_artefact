@@ -1,0 +1,79 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Tower - Wingman Suite</title>
+  <meta name="description" content="Tower is the Wingman backend authority for Nostr auth, Postgres state, graph memory, files, storage, and workspace APIs.">
+  <link rel="stylesheet" href="./styles.css?v=11">
+</head>
+<body>
+  <header class="topbar">
+    <div class="shell topbar-inner">
+      <a class="brand" href="./index.html"><span class="mark">W</span><span>Wingman Suite</span></a>
+      <nav class="nav" aria-label="Primary">
+        <a href="./index.html">Overview</a>
+        <a href="./autopilot.html">Autopilot</a>
+        <a href="./flight-deck.html">Flight Deck</a>
+        <a href="./tower.html" aria-current="page">Tower</a>
+        <a href="./skills.html">Skills</a>
+        <a href="./teams.html">Teams</a>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+    <section class="page-head">
+      <div class="shell">
+        <div class="eyebrow">03 - Backend authority</div>
+        <h1>Tower keeps the shared state trustworthy.</h1>
+        <p class="lead">It is the backend layer for workspace records, Nostr identity, NIP-98 signed APIs, Postgres data, storage, graph knowledge, and encrypted record sync.</p>
+        <nav class="subnav" aria-label="Component pages">
+          <a href="./autopilot.html">Autopilot</a>
+          <a href="./flight-deck.html">Flight Deck</a>
+          <a href="./tower.html" aria-current="page">Tower</a>
+          <a href="./skills.html">Skills</a>
+          <a href="./teams.html">Teams</a>
+        </nav>
+      </div>
+    </section>
+
+    <section class="section white">
+      <div class="shell detail-grid">
+        <article class="detail-card"><strong>What it does</strong><p>Stores and serves the shared workspace data: tasks, chats, docs, files, comments, groups, scopes, graph memory, and app records.</p></article>
+        <article class="detail-card"><strong>Why it exists</strong><p>Agent work needs a system of record. Tower gives each user, app, and agent an identity and a backend contract instead of loose local files.</p></article>
+        <article class="detail-card"><strong>How it works</strong><p>Agents and apps call Tower with Nostr/NIP-98 signed requests. Tower validates identity, applies access rules, and writes durable state.</p></article>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="shell split">
+        <div>
+          <p class="kicker">State and memory</p>
+          <h2>Tower is where shared work becomes durable.</h2>
+        </div>
+        <div class="grid">
+          <article class="card"><strong>Postgres records</strong><p>Typed APIs for workspace data such as chats, tasks, docs, comments, files, grants, and scopes.</p></article>
+          <article class="card"><strong>Nostr auth</strong><p>People, agents, apps, and workspace keys can sign actions instead of relying on a single shared account.</p></article>
+          <article class="card"><strong>Graph knowledge</strong><p>Named people, projects, sessions, apps, and prior work can become queryable memory.</p></article>
+          <article class="card"><strong>Storage</strong><p>Files, images, audio, generated outputs, and artifacts can be stored with workspace metadata.</p></article>
+          <article class="card"><strong>Groups</strong><p>Access can be scoped to teams and workspaces rather than being globally open.</p></article>
+          <article class="card"><strong>Encrypted sync</strong><p>SuperBased-style encrypted records remain available where compatibility or privacy calls for it.</p></article>
+        </div>
+      </div>
+    </section>
+
+    <section class="section white">
+      <div class="shell next">
+        <div>
+          <p class="kicker">Next piece</p>
+          <h2>Skills make agent work repeatable instead of improvised.</h2>
+        </div>
+        <a class="button" href="./skills.html">Open Skills</a>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer"><div class="shell">Wingman Suite draft 2.</div></footer>
+</body>
+</html>

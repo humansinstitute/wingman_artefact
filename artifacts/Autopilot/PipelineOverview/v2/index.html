@@ -1,0 +1,621 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Autopilot Pipeline Overview v2</title>
+  <script type="module">
+    import mermaid from "https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.esm.min.mjs";
+    mermaid.initialize({
+      startOnLoad: true,
+      securityLevel: "loose",
+      theme: "base",
+      themeVariables: {
+        fontFamily: "Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, Segoe UI, sans-serif",
+        primaryColor: "#f5f9f7",
+        primaryTextColor: "#16221c",
+        primaryBorderColor: "#377b65",
+        lineColor: "#66756f",
+        secondaryColor: "#f8f1df",
+        tertiaryColor: "#eef3fb",
+        clusterBkg: "#fbfcfb",
+        clusterBorder: "#c9d5cf"
+      }
+    });
+  </script>
+  <style>
+    :root {
+      --bg: #f4f6f3;
+      --panel: #ffffff;
+      --soft: #f8faf7;
+      --ink: #142019;
+      --muted: #617069;
+      --line: #d8e0dc;
+      --accent: #2d7b62;
+      --blue: #2f5f9d;
+      --amber: #956716;
+      --shadow: 0 18px 44px rgba(28, 42, 35, 0.08);
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      background: var(--bg);
+      color: var(--ink);
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      line-height: 1.5;
+    }
+
+    header {
+      padding: 34px 38px 28px;
+      background: #111f19;
+      color: #f8fbf8;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.14);
+    }
+
+    header h1 {
+      margin: 0 0 8px;
+      font-size: 34px;
+      line-height: 1.12;
+      letter-spacing: 0;
+    }
+
+    header p {
+      margin: 0;
+      max-width: 1040px;
+      color: #c9d8d0;
+      font-size: 16px;
+    }
+
+    main {
+      max-width: 1450px;
+      margin: 0 auto;
+      padding: 24px 28px 56px;
+    }
+
+    .toolbar {
+      position: sticky;
+      top: 0;
+      z-index: 3;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      padding: 14px 0 18px;
+      background: rgba(244, 246, 243, 0.94);
+      backdrop-filter: blur(8px);
+      border-bottom: 1px solid rgba(216, 224, 220, 0.82);
+    }
+
+    .toolbar a {
+      display: inline-flex;
+      align-items: center;
+      min-height: 34px;
+      padding: 6px 10px;
+      border: 1px solid var(--line);
+      border-radius: 7px;
+      background: var(--panel);
+      color: var(--ink);
+      text-decoration: none;
+      font-size: 13px;
+      font-weight: 650;
+    }
+
+    .toolbar a:hover {
+      border-color: var(--accent);
+      color: var(--accent);
+    }
+
+    section, details {
+      margin-top: 18px;
+      background: var(--panel);
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      box-shadow: var(--shadow);
+    }
+
+    section {
+      padding: 22px;
+    }
+
+    section h2 {
+      margin: 0 0 6px;
+      font-size: 22px;
+      letter-spacing: 0;
+    }
+
+    section > p, details > p {
+      margin: 0 0 16px;
+      color: var(--muted);
+      max-width: 1080px;
+    }
+
+    details {
+      overflow: hidden;
+    }
+
+    details > summary {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      cursor: pointer;
+      padding: 16px 18px;
+      list-style: none;
+      font-weight: 760;
+      border-bottom: 1px solid transparent;
+    }
+
+    details > summary::-webkit-details-marker {
+      display: none;
+    }
+
+    details > summary::before {
+      content: "+";
+      display: inline-grid;
+      place-items: center;
+      width: 26px;
+      height: 26px;
+      border-radius: 7px;
+      border: 1px solid #abc0b7;
+      color: var(--accent);
+      background: #f6faf8;
+      font-size: 18px;
+      line-height: 1;
+      flex: 0 0 auto;
+    }
+
+    details[open] > summary {
+      border-bottom-color: var(--line);
+    }
+
+    details[open] > summary::before {
+      content: "-";
+      color: #20332a;
+      background: #e9f2ee;
+    }
+
+    .details-body {
+      padding: 18px;
+    }
+
+    .diagram {
+      overflow: auto;
+      padding: 18px;
+      background: var(--soft);
+      border: 1px solid var(--line);
+      border-radius: 8px;
+    }
+
+    .mermaid {
+      min-width: 780px;
+    }
+
+    .two-col {
+      display: grid;
+      grid-template-columns: minmax(0, 1.4fr) minmax(320px, 0.6fr);
+      gap: 16px;
+      align-items: start;
+    }
+
+    .cards {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 14px;
+      margin-top: 16px;
+    }
+
+    .card {
+      padding: 14px;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: #fcfdfb;
+    }
+
+    .card h3 {
+      margin: 0 0 8px;
+      font-size: 15px;
+    }
+
+    .card ul {
+      margin: 0;
+      padding-left: 18px;
+      color: var(--muted);
+      font-size: 14px;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 14px;
+      font-size: 14px;
+      background: var(--panel);
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      overflow: hidden;
+    }
+
+    th, td {
+      text-align: left;
+      vertical-align: top;
+      padding: 11px 12px;
+      border-bottom: 1px solid var(--line);
+    }
+
+    th {
+      background: #edf3ef;
+      color: #34443d;
+      font-size: 12px;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+    }
+
+    tr:last-child td {
+      border-bottom: 0;
+    }
+
+    code {
+      padding: 1px 5px;
+      border: 1px solid #d5ded9;
+      border-radius: 5px;
+      background: #f4f7f5;
+      color: #173026;
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", monospace;
+      font-size: 0.92em;
+    }
+
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      min-height: 24px;
+      padding: 2px 8px;
+      border-radius: 999px;
+      background: #edf4f1;
+      color: #1f5d49;
+      border: 1px solid #c9dbd3;
+      font-size: 12px;
+      font-weight: 700;
+    }
+
+    .callout {
+      padding: 13px 15px;
+      border-left: 4px solid var(--amber);
+      background: #fff8e7;
+      border-radius: 6px;
+      color: #4b3712;
+      font-size: 14px;
+    }
+
+    @media (max-width: 880px) {
+      header { padding: 28px 22px; }
+      header h1 { font-size: 28px; }
+      main { padding: 18px 14px 40px; }
+      .toolbar { position: static; }
+      .two-col { grid-template-columns: 1fr; }
+      section { padding: 16px; }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>Autopilot Pipeline Overview v2</h1>
+    <p>Expandable view of Flight Deck PG dispatch, with the agent chat dispatch opened into its main routing paths and user feedback surfaces.</p>
+  </header>
+
+  <main>
+    <nav class="toolbar" aria-label="Artifact sections">
+      <a href="#entry">Entry</a>
+      <a href="#chat-expanded">Agent Chat</a>
+      <a href="#data">Data Passed</a>
+      <a href="#other-dispatch">Other Dispatch</a>
+      <a href="#watch">Gaps</a>
+    </nav>
+
+    <section id="entry">
+      <h2>Initial Dispatch Map</h2>
+      <p>The top-level map stays intentionally small. The chat dispatch node now points to an expandable section that shows the branches it can take and where each branch returns feedback.</p>
+      <div class="diagram">
+        <pre class="mermaid">flowchart LR
+  FD[Flight Deck PG event] --> Policy[Agent profile policy resolution]
+  Policy -->|chat_mention| Chat[fd-agent-dispatch-chat<br/>expand for paths]
+  Policy -->|task_assigned or task_dispatch| TaskResp[fd-agent-dispatch-task-response]
+  Policy -->|task_comment or document_comment_tagged| CommentResp[fd-agent-dispatch-comment-response]
+  Policy -->|document_invocation| DocInvoke[fd-document-invocation]
+  Policy -->|task_invocation| TaskInvoke[fd-task-invocation]
+
+  Chat --> ChatPaths[direct reply<br/>needs input<br/>document discussion<br/>task-backed child<br/>direct child<br/>ignore]
+  TaskResp --> TaskReturn[task comment and task state]
+  CommentResp --> CommentReturn[comment reply on task or document]
+  DocInvoke --> DocReturn[document edits or comments<br/>then channel summary]
+  TaskInvoke --> TaskInvokeReturn[task comment<br/>optionally child pipeline]</pre>
+      </div>
+    </section>
+
+    <section id="chat-expanded">
+      <h2>Agent Chat Dispatch Paths</h2>
+      <p>Each branch starts from the same hydrated chat thread. The agent or classifier selects one of these outcomes, then deterministic publisher steps post to the correct user-visible surface.</p>
+
+      <details open>
+        <summary>Agent Chat Dispatch Summary</summary>
+        <div class="details-body">
+          <div class="diagram">
+            <pre class="mermaid">flowchart TD
+  Mention[Chat mention] --> Hydrate[Hydrate thread, channel, scope, refs]
+  Hydrate --> Guard{Proceed?}
+  Guard -->|no: self or unauthorized| Ignore[No response]
+  Guard -->|yes| Classify[Short lookup, classifier, optional agent decision]
+
+  Classify --> Direct[Direct answer]
+  Classify --> NeedInput[Needs input]
+  Classify --> DocDiscussion[Document discussion child]
+  Classify --> TaskBacked[Create or reuse task and start child]
+  Classify --> DirectChild[Start direct child pipeline]
+  Classify --> Ignore
+
+  Direct --> ChatReply[Reply in same chat thread]
+  NeedInput --> ChatQuestion[Ask question in same chat thread]
+  DocDiscussion --> DocClose[Document updated or commented]
+  DocClose --> ChatSummary[Reply in same chat thread]
+  TaskBacked --> TaskProgress[Child reports on task]
+  TaskProgress --> ChatStatus[Chat status with task mention]
+  DirectChild --> ChildClose[Child closes to chat thread]
+  Ignore --> Silent[No user-facing post]</pre>
+          </div>
+        </div>
+      </details>
+
+      <details>
+        <summary>Direct Answer or Short Lookup</summary>
+        <div class="details-body two-col">
+          <div class="diagram">
+            <pre class="mermaid">flowchart TD
+  Chat[Chat mention] --> Hydrate[Hydrate latest thread]
+  Hydrate --> Short[Short lookup or answer-now decision]
+  Short --> Draft[Prepare response draft]
+  Draft --> Publish[publishFlightDeckResponse]
+  Publish --> User[User sees reply in same thread]</pre>
+          </div>
+          <div class="card">
+            <h3>Feedback surface</h3>
+            <ul>
+              <li>Same channel/thread as the triggering message.</li>
+              <li>No task is created.</li>
+              <li>Required data: <code>channelId</code>, <code>threadId</code>, triggering <code>messageId</code>, response draft.</li>
+            </ul>
+          </div>
+        </div>
+      </details>
+
+      <details>
+        <summary>Needs Input</summary>
+        <div class="details-body two-col">
+          <div class="diagram">
+            <pre class="mermaid">flowchart TD
+  Chat[Chat mention] --> Classify[Classify missing decision or context]
+  Classify --> Question[Focused question]
+  Question --> Publish[publishFlightDeckResponse]
+  Publish --> User[User sees clarification question in chat]</pre>
+          </div>
+          <div class="card">
+            <h3>Feedback surface</h3>
+            <ul>
+              <li>Same chat thread.</li>
+              <li>Used when a concrete repo, target surface, document, or instruction is missing.</li>
+              <li>Should avoid launching child work with guessed context.</li>
+            </ul>
+          </div>
+        </div>
+      </details>
+
+      <details>
+        <summary>Document Discussion Child Pipeline</summary>
+        <div class="details-body two-col">
+          <div class="diagram">
+            <pre class="mermaid">flowchart TD
+  Chat[Chat mention about a document] --> Route[routeDiscussionChat]
+  Route --> Child[document-discussion]
+  Child --> Doc[Ensure or update document, add comments if needed]
+  Doc --> Publish[publishFlightDeckResponse]
+  Publish --> User[User sees chat reply with document status]</pre>
+          </div>
+          <div class="card">
+            <h3>Feedback surface</h3>
+            <ul>
+              <li>Document may be edited or commented by the child pipeline.</li>
+              <li>Chat thread receives the discussion reply or next question.</li>
+              <li>Required data: document mention/id/title when available, discussion goal, source thread.</li>
+            </ul>
+          </div>
+        </div>
+      </details>
+
+      <details>
+        <summary>Task-Backed Child Work</summary>
+        <div class="details-body two-col">
+          <div class="diagram">
+            <pre class="mermaid">flowchart TD
+  Chat[Chat request for substantial work] --> Plan[Select child pipeline]
+  Plan --> Task[Create or reuse in-progress task]
+  Task --> Child[startChildPipeline]
+  Child --> Software[software-implementation-review-loop]
+  Child --> Research[research-and-report]
+  Child --> DoReview[do-and-review]
+  Software --> TaskClose[Task progress and final review comment]
+  Research --> TaskClose
+  DoReview --> TaskClose
+  TaskClose --> Review[Task moves to review when done]
+  Task --> ChatStatus[Chat reply with task mention and launch status]</pre>
+          </div>
+          <div class="card">
+            <h3>Feedback surfaces</h3>
+            <ul>
+              <li>Immediate chat reply confirms task/child launch.</li>
+              <li>Child pipeline reports progress on the Flight Deck task.</li>
+              <li>Task moves to <code>review</code> only after deterministic closeout.</li>
+              <li>Required data: <code>workPlan.taskId</code>, <code>reporting.mode = flightdeck_task</code>, instructions, origin thread.</li>
+            </ul>
+          </div>
+        </div>
+      </details>
+
+      <details>
+        <summary>Direct Child Pipeline Without a Task</summary>
+        <div class="details-body two-col">
+          <div class="diagram">
+            <pre class="mermaid">flowchart TD
+  Chat[Chat request] --> Direct[start-direct-pipeline]
+  Direct --> Child[Selected child pipeline]
+  Child --> Closeout{reporting.mode}
+  Closeout -->|chat_thread| ChatClose[Final response in original chat thread]
+  Closeout -->|missing| OutputOnly[Pipeline output only, no guaranteed user post]</pre>
+          </div>
+          <div class="card">
+            <h3>Feedback surface</h3>
+            <ul>
+              <li>Preferred direct mode uses <code>reporting.mode = chat_thread</code>.</li>
+              <li>If reporting is missing, the run may complete without a user-visible closeout.</li>
+              <li>Required data: source channel/thread/message and clear child pipeline instructions.</li>
+            </ul>
+          </div>
+        </div>
+      </details>
+
+      <details>
+        <summary>Ignore, Self-Authored, or Unauthorized</summary>
+        <div class="details-body two-col">
+          <div class="diagram">
+            <pre class="mermaid">flowchart TD
+  Chat[Chat event] --> Guard[Policy and actor checks]
+  Guard -->|self-authored| Skip[Skip]
+  Guard -->|unauthorized actor| Suppress[Suppress]
+  Guard -->|agent says ignore| Noop[No response]
+  Skip --> Silent[No user-facing post]
+  Suppress --> Silent
+  Noop --> Silent</pre>
+          </div>
+          <div class="card">
+            <h3>Feedback surface</h3>
+            <ul>
+              <li>No chat reply or task update.</li>
+              <li>Runtime records a suppression/skip diagnostic for observability.</li>
+            </ul>
+          </div>
+        </div>
+      </details>
+    </section>
+
+    <section id="data">
+      <h2>Data Passed Through Chat Dispatch</h2>
+      <p>These are the fields that matter most for selecting a path and returning feedback to the user.</p>
+      <table>
+        <thead>
+          <tr>
+            <th>Data</th>
+            <th>Needed for</th>
+            <th>Closeout impact</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><code>workspaceId</code>, <code>scopeId</code>, <code>channelId</code>, <code>threadId</code></td>
+            <td>All chat dispatch paths</td>
+            <td>Lets publishers reply to the same Flight Deck channel/thread.</td>
+          </tr>
+          <tr>
+            <td>Triggering message body, sender, attachments, references</td>
+            <td>Classification and agent decision</td>
+            <td>Determines whether the run answers, asks, creates a task, or starts a child.</td>
+          </tr>
+          <tr>
+            <td><code>workPlan.taskId</code></td>
+            <td>Task-backed child work</td>
+            <td>All child progress and final status return to the task.</td>
+          </tr>
+          <tr>
+            <td><code>workPlan.reporting.mode = flightdeck_task</code></td>
+            <td>Task-backed closeout</td>
+            <td>Enables task comments and task state transition to review.</td>
+          </tr>
+          <tr>
+            <td><code>workPlan.reporting.mode = chat_thread</code></td>
+            <td>Direct child closeout</td>
+            <td>Enables final child response in the original chat thread.</td>
+          </tr>
+          <tr>
+            <td><code>workdir</code> and <code>targetSurface</code></td>
+            <td>Software child work</td>
+            <td>If missing, dispatch should ask for input instead of launching guessed software work.</td>
+          </tr>
+        </tbody>
+      </table>
+    </section>
+
+    <section id="other-dispatch">
+      <h2>Other Dispatch Paths</h2>
+      <p>These are shown for context. They remain less expanded because the requested v2 focus is the agent chat dispatch branch.</p>
+      <div class="cards">
+        <div class="card">
+          <h3><span class="badge">Task invocation</span></h3>
+          <ul>
+            <li><code>fd-task-invocation</code> loads the invoked task and comments.</li>
+            <li>Agent chooses direct task comment, needs input, ignore, or child work.</li>
+            <li>Child work gets <code>reporting.mode = flightdeck_task</code>.</li>
+          </ul>
+        </div>
+        <div class="card">
+          <h3><span class="badge">Document invocation</span></h3>
+          <ul>
+            <li><code>fd-document-invocation</code> loads the document and comments.</li>
+            <li>Agent edits/comments with document tools.</li>
+            <li>Publisher posts a channel summary with a document mention.</li>
+          </ul>
+        </div>
+        <div class="card">
+          <h3><span class="badge">Task response</span></h3>
+          <ul>
+            <li><code>fd-agent-dispatch-task-response</code> handles ordinary task assignment/update dispatch.</li>
+            <li>It can launch the same child work pipelines.</li>
+            <li>Feedback returns as task comments and state updates.</li>
+          </ul>
+        </div>
+        <div class="card">
+          <h3><span class="badge">Comment response</span></h3>
+          <ul>
+            <li><code>fd-agent-dispatch-comment-response</code> handles tagged task/document comments.</li>
+            <li>Feedback returns to the same task or document comment surface.</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <section id="watch">
+      <h2>Documented v2 Notes</h2>
+      <div class="callout">
+        The important rule for chat dispatch is that the return surface should be explicit. Task-backed work needs <code>reporting.mode = flightdeck_task</code>; direct child work needs <code>reporting.mode = chat_thread</code>; missing reporting means the child pipeline may finish without a user-visible closeout.
+      </div>
+      <div class="cards">
+        <div class="card">
+          <h3>UI change in v2</h3>
+          <ul>
+            <li>The agent chat path is now expandable with native collapsible sections.</li>
+            <li>The top-level diagram shows that chat dispatch has multiple internal routes.</li>
+          </ul>
+        </div>
+        <div class="card">
+          <h3>Design intent</h3>
+          <ul>
+            <li>Do not show every step in child pipelines.</li>
+            <li>Show where the branch dispatches and how it closes out to the user.</li>
+          </ul>
+        </div>
+        <div class="card">
+          <h3>Operational caveat</h3>
+          <ul>
+            <li>Code changes still require an Autopilot restart before live dispatch uses newly wired functions.</li>
+            <li>This artifact is documentation only.</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+  </main>
+</body>
+</html>

@@ -1,0 +1,1286 @@
+<!doctype html>
+<html lang="en-AU">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Wingman Suite Showoff Video v1</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Anton:wght@400&family=Figtree:wght@400;500;600;700;800&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #f3f4ef;
+      --paper: #fbfbf7;
+      --ink: #10130f;
+      --muted: #636961;
+      --soft: #e7e7dd;
+      --line: #d3d5ca;
+      --deep: #07110d;
+      --deep-2: #12221a;
+      --green: #1f7a61;
+      --green-2: #49a47e;
+      --blue: #335f9e;
+      --amber: #bb7a24;
+      --red: #b14d3a;
+      --plum: #6e4b73;
+      --shadow: 0 24px 70px rgba(16, 19, 15, 0.12);
+      --radius: 8px;
+    }
+
+    * { box-sizing: border-box; }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      margin: 0;
+      overflow-x: hidden;
+      background:
+        linear-gradient(180deg, rgba(7, 17, 13, 0.05), rgba(7, 17, 13, 0) 240px),
+        var(--bg);
+      color: var(--ink);
+      font-family: Figtree, Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      line-height: 1.45;
+    }
+
+    button {
+      font: inherit;
+    }
+
+    .shell {
+      width: min(1500px, calc(100vw - 36px));
+      margin: 0 auto;
+      padding: 24px 0 56px;
+    }
+
+    .masthead {
+      display: grid;
+      grid-template-columns: minmax(0, 1.3fr) minmax(300px, 0.7fr);
+      gap: 24px;
+      align-items: stretch;
+      margin-bottom: 18px;
+      border: 1px solid rgba(7, 17, 13, 0.18);
+      background: var(--deep);
+      color: #f8fbf6;
+      box-shadow: var(--shadow);
+      overflow: hidden;
+    }
+
+    .mast-copy {
+      padding: clamp(24px, 4vw, 52px);
+      min-height: 300px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      gap: 30px;
+    }
+
+    .brandline {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      align-items: center;
+      color: #c6d1c7;
+      font-size: 13px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+    }
+
+    .brandmark {
+      display: inline-grid;
+      place-items: center;
+      width: 34px;
+      height: 34px;
+      border-radius: 50%;
+      background: #f4f1df;
+      color: var(--deep);
+      font-family: Anton, Impact, sans-serif;
+      letter-spacing: 0;
+      font-size: 18px;
+    }
+
+    h1 {
+      margin: 0;
+      max-width: 860px;
+      font-family: Anton, Impact, sans-serif;
+      font-weight: 400;
+      line-height: 0.96;
+      letter-spacing: 0;
+      font-size: 104px;
+      text-transform: uppercase;
+    }
+
+    .lead {
+      margin: 0;
+      max-width: 760px;
+      color: #d8dfd6;
+      font-size: 24px;
+      line-height: 1.25;
+      font-weight: 600;
+    }
+
+    .mast-panel {
+      position: relative;
+      padding: 26px;
+      background:
+        linear-gradient(145deg, rgba(244, 241, 223, 0.96), rgba(210, 221, 212, 0.9)),
+        #eef0e8;
+      color: var(--ink);
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      border-left: 1px solid rgba(7, 17, 13, 0.14);
+      min-height: 300px;
+    }
+
+    .run-card {
+      border: 1px solid rgba(16, 19, 15, 0.2);
+      background: rgba(251, 251, 247, 0.72);
+      padding: 16px;
+      border-radius: var(--radius);
+    }
+
+    .run-card + .run-card {
+      margin-top: 12px;
+    }
+
+    .run-card small {
+      display: block;
+      color: var(--muted);
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      margin-bottom: 8px;
+    }
+
+    .run-card strong {
+      display: block;
+      font-size: 21px;
+      line-height: 1.12;
+      overflow-wrap: anywhere;
+    }
+
+    .system-strip {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 10px;
+      margin-top: 16px;
+    }
+
+    .system-pill {
+      min-height: 54px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      gap: 2px;
+      padding: 10px;
+      border-radius: var(--radius);
+      color: #f6faf6;
+      background: var(--deep-2);
+    }
+
+    .system-pill span {
+      color: #b9c7bd;
+      font-size: 11px;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+    }
+
+    .system-pill b {
+      font-size: 15px;
+    }
+
+    .workspace {
+      display: grid;
+      grid-template-columns: minmax(0, 1.45fr) minmax(330px, 0.55fr);
+      gap: 18px;
+      align-items: start;
+    }
+
+    .panel {
+      background: var(--paper);
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      box-shadow: 0 16px 42px rgba(16, 19, 15, 0.08);
+    }
+
+    .panel-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 14px;
+      padding: 14px 16px;
+      border-bottom: 1px solid var(--line);
+      background: rgba(255, 255, 255, 0.52);
+    }
+
+    .panel-title {
+      margin: 0;
+      font-size: 15px;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      font-weight: 800;
+      color: #26312a;
+    }
+
+    .timecode {
+      font-variant-numeric: tabular-nums;
+      font-weight: 800;
+      color: var(--green);
+      min-width: 76px;
+      text-align: right;
+    }
+
+    .video-shell {
+      padding: 16px;
+    }
+
+    .stage {
+      position: relative;
+      overflow: hidden;
+      aspect-ratio: 16 / 9;
+      min-height: 360px;
+      border-radius: var(--radius);
+      background:
+        radial-gradient(circle at 16% 18%, rgba(73, 164, 126, 0.24), transparent 28%),
+        radial-gradient(circle at 86% 32%, rgba(187, 122, 36, 0.18), transparent 32%),
+        linear-gradient(150deg, #07110d 0%, #172b22 68%, #f6f1df 68.2%, #efeee6 100%);
+      color: #f7fbf6;
+      border: 1px solid rgba(16, 19, 15, 0.16);
+    }
+
+    .scene {
+      position: absolute;
+      inset: 0;
+      opacity: 0;
+      transform: translateY(12px);
+      transition: opacity 420ms ease, transform 420ms ease;
+      padding: clamp(18px, 3vw, 44px);
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) minmax(230px, 0.58fr);
+      gap: clamp(14px, 3vw, 38px);
+      align-items: center;
+      pointer-events: none;
+    }
+
+    .scene.active {
+      opacity: 1;
+      transform: translateY(0);
+      pointer-events: auto;
+    }
+
+    .scene-kicker {
+      color: #a9d5bd;
+      font-size: 13px;
+      font-weight: 800;
+      letter-spacing: 0.09em;
+      text-transform: uppercase;
+      margin-bottom: 12px;
+    }
+
+    .scene h2 {
+      margin: 0;
+      max-width: 720px;
+      font-family: Anton, Impact, sans-serif;
+      font-size: 64px;
+      line-height: 0.98;
+      letter-spacing: 0;
+      text-transform: uppercase;
+    }
+
+    .scene p {
+      margin: 18px 0 0;
+      max-width: 720px;
+      color: #dce5dc;
+      font-size: 18px;
+      font-weight: 600;
+      line-height: 1.28;
+    }
+
+    .scene.light {
+      color: var(--ink);
+    }
+
+    .scene.light .scene-kicker {
+      color: var(--green);
+    }
+
+    .scene.light p {
+      color: #414940;
+    }
+
+    .diagram-board {
+      min-height: 260px;
+      border-radius: var(--radius);
+      background: rgba(251, 251, 247, 0.88);
+      border: 1px solid rgba(16, 19, 15, 0.18);
+      color: var(--ink);
+      padding: 16px;
+      box-shadow: 0 20px 55px rgba(0, 0, 0, 0.16);
+    }
+
+    .flow {
+      display: grid;
+      gap: 10px;
+    }
+
+    .flow-node {
+      position: relative;
+      padding: 10px 10px 10px 44px;
+      min-height: 52px;
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      background: #fff;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+    }
+
+    .flow-node:before {
+      content: attr(data-step);
+      position: absolute;
+      left: 12px;
+      top: 50%;
+      transform: translateY(-50%);
+      width: 24px;
+      height: 24px;
+      display: grid;
+      place-items: center;
+      border-radius: 50%;
+      background: var(--deep);
+      color: #f8fbf6;
+      font-size: 12px;
+      font-weight: 800;
+    }
+
+    .flow-node b {
+      font-size: 14px;
+      line-height: 1.12;
+    }
+
+    .flow-node span {
+      color: var(--muted);
+      font-size: 12px;
+      margin-top: 2px;
+    }
+
+    .ops-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 10px;
+    }
+
+    .ops-tile {
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      background: #fff;
+      padding: 14px;
+      min-height: 112px;
+    }
+
+    .ops-tile b {
+      display: block;
+      font-size: 17px;
+      margin-bottom: 8px;
+    }
+
+    .ops-tile span {
+      color: var(--muted);
+      font-size: 13px;
+    }
+
+    .metric-row {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 10px;
+      margin-top: 12px;
+    }
+
+    .metric {
+      padding: 12px;
+      border: 1px solid rgba(16, 19, 15, 0.16);
+      border-radius: var(--radius);
+      background: #f8f7ed;
+    }
+
+    .metric strong {
+      display: block;
+      font-size: 24px;
+      line-height: 1;
+      font-family: Anton, Impact, sans-serif;
+      font-weight: 400;
+    }
+
+    .metric span {
+      color: var(--muted);
+      font-size: 12px;
+      font-weight: 700;
+    }
+
+    .app-frame {
+      background: #111711;
+      color: #f6faf6;
+      border-radius: var(--radius);
+      overflow: hidden;
+      border: 1px solid #203229;
+    }
+
+    .app-top {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 10px 12px;
+      border-bottom: 1px solid #2f4036;
+      color: #bcc7be;
+      font-size: 12px;
+      font-weight: 800;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+
+    .app-body {
+      padding: 12px;
+      display: grid;
+      gap: 10px;
+    }
+
+    .app-item {
+      display: grid;
+      grid-template-columns: 1fr auto;
+      gap: 10px;
+      align-items: center;
+      padding: 10px;
+      border-radius: var(--radius);
+      background: #f8f7ee;
+      color: var(--ink);
+    }
+
+    .app-item span {
+      color: var(--muted);
+      font-size: 12px;
+    }
+
+    .badge {
+      display: inline-grid;
+      place-items: center;
+      min-height: 24px;
+      padding: 3px 8px;
+      border-radius: 999px;
+      background: #e2efe8;
+      color: var(--green);
+      font-size: 12px;
+      font-weight: 800;
+    }
+
+    .controls {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 8px;
+      margin-top: 12px;
+    }
+
+    .control-btn {
+      min-height: 38px;
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      background: #fff;
+      color: var(--ink);
+      padding: 8px 12px;
+      font-weight: 800;
+      cursor: pointer;
+    }
+
+    .control-btn.primary {
+      background: var(--deep);
+      color: #f8fbf6;
+      border-color: var(--deep);
+    }
+
+    .control-btn:hover {
+      border-color: var(--green);
+    }
+
+    .artifact-download {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 38px;
+      margin-top: 14px;
+      border: 1px solid rgba(16, 19, 15, 0.2);
+      border-radius: var(--radius);
+      background: var(--deep);
+      color: #f8fbf6;
+      padding: 8px 12px;
+      font-size: 13px;
+      font-weight: 900;
+      text-decoration: none;
+    }
+
+    .scrubber {
+      flex: 1 1 260px;
+      accent-color: var(--green);
+    }
+
+    .timeline-panel {
+      margin-top: 16px;
+      overflow: hidden;
+    }
+
+    .timeline-copy {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) auto;
+      gap: 16px;
+      align-items: end;
+      padding: 16px;
+      border-bottom: 1px solid var(--line);
+    }
+
+    .timeline-copy h2 {
+      margin: 0;
+      font-size: 22px;
+      line-height: 1.1;
+    }
+
+    .timeline-copy p {
+      margin: 6px 0 0;
+      color: var(--muted);
+      max-width: 980px;
+    }
+
+    .timeline-canvas-wrap {
+      padding: 12px 16px 16px;
+      overflow: auto;
+      background: #f8f8f1;
+    }
+
+    canvas {
+      display: block;
+      min-width: 920px;
+      width: 100%;
+      height: 190px;
+      background: #fffefa;
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+    }
+
+    .side-stack {
+      display: grid;
+      gap: 18px;
+    }
+
+    .script-block {
+      padding: 16px;
+    }
+
+    .script-block h2 {
+      margin: 0 0 10px;
+      font-size: 20px;
+    }
+
+    .voiceover {
+      margin: 0;
+      color: #2d352e;
+      font-size: 18px;
+      font-weight: 700;
+      line-height: 1.32;
+    }
+
+    .shot-meta {
+      display: grid;
+      gap: 8px;
+      margin-top: 14px;
+    }
+
+    .meta-row {
+      display: grid;
+      grid-template-columns: 92px 1fr;
+      gap: 12px;
+      align-items: start;
+      font-size: 14px;
+      border-top: 1px solid var(--line);
+      padding-top: 8px;
+    }
+
+    .meta-row b {
+      color: var(--muted);
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      font-size: 12px;
+    }
+
+    .beat-list {
+      display: grid;
+      gap: 0;
+    }
+
+    .beat {
+      display: grid;
+      grid-template-columns: 76px 1fr;
+      gap: 12px;
+      padding: 13px 16px;
+      border-top: 1px solid var(--line);
+      border-right: 0;
+      border-bottom: 0;
+      border-left: 0;
+      cursor: pointer;
+      background: var(--paper);
+      text-align: left;
+      width: 100%;
+    }
+
+    .beat:first-child {
+      border-top: 0;
+    }
+
+    .beat:hover,
+    .beat.active {
+      background: #edf3ee;
+    }
+
+    .beat time {
+      color: var(--green);
+      font-weight: 900;
+      font-variant-numeric: tabular-nums;
+    }
+
+    .beat b {
+      display: block;
+      font-size: 15px;
+      margin-bottom: 2px;
+    }
+
+    .beat span {
+      display: block;
+      color: var(--muted);
+      font-size: 13px;
+    }
+
+    .boards {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 18px;
+      margin-top: 18px;
+    }
+
+    .board {
+      min-height: 250px;
+    }
+
+    .board-body {
+      padding: 16px;
+    }
+
+    .board h2 {
+      margin: 0;
+      font-size: 21px;
+    }
+
+    .board p {
+      margin: 8px 0 0;
+      color: var(--muted);
+    }
+
+    .storyline {
+      margin: 12px 0 0;
+      padding-left: 18px;
+      color: #2f3730;
+    }
+
+    .storyline li + li {
+      margin-top: 8px;
+    }
+
+    .color-key {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      padding: 12px 16px 16px;
+      border-top: 1px solid var(--line);
+    }
+
+    .key-item {
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+      min-height: 28px;
+      padding: 4px 8px;
+      border: 1px solid var(--line);
+      border-radius: 999px;
+      background: #fff;
+      font-size: 12px;
+      font-weight: 800;
+      color: #384139;
+    }
+
+    .swatch {
+      width: 12px;
+      height: 12px;
+      border-radius: 50%;
+      background: var(--green);
+    }
+
+    .footer-note {
+      margin-top: 18px;
+      padding: 16px 18px;
+      color: #4d554e;
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      background: rgba(251, 251, 247, 0.7);
+    }
+
+    @media (max-width: 1050px) {
+      .masthead,
+      .workspace,
+      .boards {
+        grid-template-columns: 1fr;
+      }
+
+      .scene {
+        grid-template-columns: 1fr;
+        align-content: center;
+      }
+
+      .diagram-board {
+        display: none;
+      }
+
+      h1 {
+        font-size: 76px;
+      }
+
+      .scene h2 {
+        font-size: 54px;
+      }
+    }
+
+    @media (max-width: 700px) {
+      .shell {
+        width: min(100vw - 20px, 1500px);
+        padding-top: 10px;
+      }
+
+      .mast-copy,
+      .mast-panel {
+        padding: 18px;
+      }
+
+      .system-strip,
+      .metric-row,
+      .ops-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .stage {
+        min-height: 420px;
+      }
+
+      h1 {
+        font-size: 32px;
+      }
+
+      .lead {
+        font-size: 16px;
+      }
+
+      .scene h2 {
+        font-size: 42px;
+      }
+
+      .scene p {
+        font-size: 16px;
+      }
+
+      .timeline-copy {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    @media (max-width: 430px) {
+      h1 {
+        font-size: 31px;
+      }
+
+      .scene h2 {
+        font-size: 38px;
+      }
+
+      .lead {
+        font-size: 19px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <main class="shell">
+    <section class="masthead" data-artifact-node-id="masthead-positioning">
+      <div class="mast-copy">
+        <div class="brandline"><span class="brandmark">W</span> Wingman Suite showoff video v1</div>
+        <div>
+          <h1>AI that actually runs work.</h1>
+          <p class="lead">A 120 second launch video concept for showing Autopilot, Tower, Flight Deck, and WApps as one working operating layer.</p>
+        </div>
+      </div>
+      <aside class="mast-panel" data-artifact-node-id="review-position">
+        <div>
+          <div class="run-card">
+            <small>Opening promise</small>
+            <strong>Chat becomes tasks, agents, apps, memory, approvals, and results.</strong>
+          </div>
+          <div class="run-card">
+            <small>Visual language</small>
+            <strong>Other Stuff restraint: direct copy, editorial confidence, working-system evidence.</strong>
+          </div>
+        </div>
+        <div class="system-strip" aria-label="Wingman Suite components">
+          <div class="system-pill"><span>Human cockpit</span><b>Flight Deck</b></div>
+          <div class="system-pill"><span>Runtime</span><b>Autopilot</b></div>
+          <div class="system-pill"><span>System record</span><b>Tower</b></div>
+          <div class="system-pill"><span>Workflow UI</span><b>WApps</b></div>
+        </div>
+        <a class="artifact-download" data-artifact-node-id="download-artifact-zip" href="./artifact-download.zip" download>Download Artifact ZIP</a>
+      </aside>
+    </section>
+
+    <section class="workspace">
+      <div class="panel" data-artifact-node-id="video-player">
+        <div class="panel-header">
+          <h2 class="panel-title">Playable 120 second video board</h2>
+          <div class="timecode" id="timecode">00:00</div>
+        </div>
+        <div class="video-shell">
+          <div class="stage" id="stage">
+            <article class="scene active" data-scene="0" data-artifact-node-id="scene-0-hook">
+              <div>
+                <div class="scene-kicker">0-21s / hook</div>
+                <h2>Most AI tools stop at chat.</h2>
+                <p>Wingman keeps going: it receives work, creates tasks, runs agents, launches apps, remembers context, and hands results back to people.</p>
+              </div>
+              <div class="diagram-board">
+                <div class="flow">
+                  <div class="flow-node" data-step="1"><b>Pete sends work</b><span>A request arrives in a real workspace.</span></div>
+                  <div class="flow-node" data-step="2"><b>Flight Deck captures it</b><span>Thread, task, context, approval path.</span></div>
+                  <div class="flow-node" data-step="3"><b>Autopilot runs it</b><span>Agent session, pipeline, trigger, app.</span></div>
+                  <div class="flow-node" data-step="4"><b>Tower records it</b><span>State, files, graph memory, permissions.</span></div>
+                  <div class="flow-node" data-step="5"><b>WApp completes it</b><span>A custom interface for the job.</span></div>
+                </div>
+              </div>
+            </article>
+
+            <article class="scene" data-scene="1" data-artifact-node-id="scene-1-flightdeck">
+              <div>
+                <div class="scene-kicker">21-45s / Flight Deck</div>
+                <h2>The cockpit for human and agent work.</h2>
+                <p>Flight Deck gives the team one place to see chats, task boards, docs, files, comments, approvals, and agent output.</p>
+              </div>
+              <div class="diagram-board">
+                <div class="ops-grid">
+                  <div class="ops-tile"><b>Chat</b><span>Requests arrive where people already work.</span></div>
+                  <div class="ops-tile"><b>Tasks</b><span>Work becomes visible, assigned, and reviewable.</span></div>
+                  <div class="ops-tile"><b>Docs + files</b><span>Context stays attached to the job.</span></div>
+                  <div class="ops-tile"><b>Approvals</b><span>Humans remain in control at the right points.</span></div>
+                </div>
+              </div>
+            </article>
+
+            <article class="scene" data-scene="2" data-artifact-node-id="scene-2-autopilot">
+              <div>
+                <div class="scene-kicker">45-68s / Autopilot</div>
+                <h2>The runtime for repeatable AI work.</h2>
+                <p>Autopilot starts sessions, runs pipelines, responds to triggers, manages agents, and hosts the apps that turn one-off prompts into operating processes.</p>
+              </div>
+              <div class="diagram-board">
+                <div class="metric-row">
+                  <div class="metric"><strong>01</strong><span>Agent session</span></div>
+                  <div class="metric"><strong>02</strong><span>Pipeline run</span></div>
+                  <div class="metric"><strong>03</strong><span>Managed WApp</span></div>
+                </div>
+                <div class="flow" style="margin-top: 12px;">
+                  <div class="flow-node" data-step="A"><b>Dispatch</b><span>Fresh worker gets a focused brief.</span></div>
+                  <div class="flow-node" data-step="B"><b>Validate</b><span>Commands, evidence, comments, handoff.</span></div>
+                  <div class="flow-node" data-step="C"><b>Continue</b><span>Trigger another run or wait for approval.</span></div>
+                </div>
+              </div>
+            </article>
+
+            <article class="scene" data-scene="3" data-artifact-node-id="scene-3-tower">
+              <div>
+                <div class="scene-kicker">68-88s / Tower</div>
+                <h2>The trust and state layer.</h2>
+                <p>Tower keeps workspace state durable, permissioned, queryable, and shared across people, agents, storage, graph memory, and custom apps.</p>
+              </div>
+              <div class="diagram-board">
+                <div class="ops-grid">
+                  <div class="ops-tile"><b>Auth</b><span>NIP-98 signed access and workspace identity.</span></div>
+                  <div class="ops-tile"><b>Records</b><span>Tasks, chats, docs, comments, files.</span></div>
+                  <div class="ops-tile"><b>Memory</b><span>Graph evidence and shared context.</span></div>
+                  <div class="ops-tile"><b>Storage</b><span>Files and artifacts stay addressable.</span></div>
+                </div>
+              </div>
+            </article>
+
+            <article class="scene light" data-scene="4" data-artifact-node-id="scene-4-wapps">
+              <div>
+                <div class="scene-kicker">88-110s / WApps</div>
+                <h2>When chat is too small, ship an app.</h2>
+                <p>WApps give each workflow its own interface while still using Wingman agents, Tower state, and Flight Deck launchers.</p>
+              </div>
+              <div class="diagram-board">
+                <div class="app-frame">
+                  <div class="app-top"><span>Wingman App</span><span>Live workflow</span></div>
+                  <div class="app-body">
+                    <div class="app-item"><div><b>Client intake</b><span>Agent enriches context and drafts next steps.</span></div><span class="badge">Ready</span></div>
+                    <div class="app-item"><div><b>Proposal builder</b><span>Human approves, pipeline packages, Tower stores.</span></div><span class="badge">Review</span></div>
+                    <div class="app-item"><div><b>Ops dashboard</b><span>Workflows become visible and repeatable.</span></div><span class="badge">Live</span></div>
+                  </div>
+                </div>
+              </div>
+            </article>
+
+            <article class="scene" data-scene="5" data-artifact-node-id="scene-5-close">
+              <div>
+                <div class="scene-kicker">110-120s / close</div>
+                <h2>From AI chat to AI operations.</h2>
+                <p>Wingman Suite brings agents, apps, memory, workflows, and human control together on infrastructure you can actually build on.</p>
+              </div>
+              <div class="diagram-board">
+                <div class="flow">
+                  <div class="flow-node" data-step="1"><b>Work enters Flight Deck</b><span>The request is visible and owned.</span></div>
+                  <div class="flow-node" data-step="2"><b>Autopilot runs the process</b><span>Agents and pipelines execute.</span></div>
+                  <div class="flow-node" data-step="3"><b>Tower preserves the truth</b><span>State, memory, and permissions remain durable.</span></div>
+                  <div class="flow-node" data-step="4"><b>WApps make it specific</b><span>Every business can have the interface it needs.</span></div>
+                </div>
+              </div>
+            </article>
+          </div>
+
+          <div class="controls" data-artifact-node-id="playback-controls">
+            <button class="control-btn primary" id="playBtn" type="button">Play</button>
+            <button class="control-btn" id="backBtn" type="button">Back 5s</button>
+            <button class="control-btn" id="nextBtn" type="button">Next beat</button>
+            <input class="scrubber" id="scrubber" type="range" min="0" max="120" step="0.1" value="0" aria-label="Video timeline">
+          </div>
+        </div>
+      </div>
+
+      <aside class="side-stack">
+        <section class="panel script-block" data-artifact-node-id="current-script">
+          <h2 id="currentTitle">0-21s: Power hook</h2>
+          <p class="voiceover" id="voiceover">Most AI tools stop at chat. Wingman keeps going. It can receive work, create tasks, run agents, use memory, launch apps, and hand results back to people.</p>
+          <div class="shot-meta">
+            <div class="meta-row"><b>Visual</b><span id="visual">Rapid montage from request to task to agent to app to result.</span></div>
+            <div class="meta-row"><b>On screen</b><span id="onscreen">Chat -> Task -> Agent -> App -> Result</span></div>
+          </div>
+        </section>
+
+        <section class="panel" data-artifact-node-id="beat-list">
+          <div class="panel-header">
+            <h2 class="panel-title">Scene beats</h2>
+          </div>
+          <div class="beat-list" id="beatList"></div>
+        </section>
+      </aside>
+    </section>
+
+    <section class="panel timeline-panel" data-artifact-node-id="timeline-canvas">
+      <div class="timeline-copy">
+        <div>
+          <h2>Timeline canvas</h2>
+          <p>The first 21 seconds carries the whole promise. The rest slows down into the four parts of the suite, then closes by naming the shift from chat to operations.</p>
+        </div>
+        <div class="timecode" id="timelineTime">00:00 / 02:00</div>
+      </div>
+      <div class="timeline-canvas-wrap">
+        <canvas id="timeline" width="1440" height="190" aria-label="120 second video timeline"></canvas>
+      </div>
+      <div class="color-key">
+        <span class="key-item"><span class="swatch" style="background:#1f7a61"></span>Hook</span>
+        <span class="key-item"><span class="swatch" style="background:#335f9e"></span>Flight Deck</span>
+        <span class="key-item"><span class="swatch" style="background:#bb7a24"></span>Autopilot</span>
+        <span class="key-item"><span class="swatch" style="background:#6e4b73"></span>Tower</span>
+        <span class="key-item"><span class="swatch" style="background:#b14d3a"></span>WApps</span>
+        <span class="key-item"><span class="swatch" style="background:#111711"></span>Close</span>
+      </div>
+    </section>
+
+    <section class="boards" data-artifact-node-id="deeper-notes">
+      <article class="panel board">
+        <div class="panel-header"><h2 class="panel-title">Positioning</h2></div>
+        <div class="board-body">
+          <h2>Lead with outcomes, then architecture.</h2>
+          <p>The video should not start as a product tour. It should start as a problem solved: AI work should not die in a chat window.</p>
+          <ul class="storyline">
+            <li>Primary line: AI that actually runs work.</li>
+            <li>Category: AI operations hub for real businesses.</li>
+            <li>Proof: tasks, agents, apps, memory, approvals, results.</li>
+          </ul>
+        </div>
+      </article>
+      <article class="panel board">
+        <div class="panel-header"><h2 class="panel-title">Visual Rules</h2></div>
+        <div class="board-body">
+          <h2>Make it feel like systems, not magic.</h2>
+          <p>The visual rhythm should be editorial, practical, and direct, with product surfaces and workflow diagrams doing the heavy lifting.</p>
+          <ul class="storyline">
+            <li>Use real UI captures in the final cut where possible.</li>
+            <li>Keep labels short enough to read in two seconds.</li>
+            <li>Show motion through state changes, not decorative effects.</li>
+          </ul>
+        </div>
+      </article>
+      <article class="panel board">
+        <div class="panel-header"><h2 class="panel-title">Export Notes</h2></div>
+        <div class="board-body">
+          <h2>This v1 is the review source.</h2>
+          <p>Once the script and pacing are approved, the same beats can be exported as a 16:9 video with screen captures, motion, and voiceover.</p>
+          <ul class="storyline">
+            <li>Runtime target: 120 seconds.</li>
+            <li>Opening target: complete thesis inside 21 seconds.</li>
+            <li>Final asset: MP4 plus WApp review artifact.</li>
+          </ul>
+        </div>
+      </article>
+    </section>
+
+    <p class="footer-note" data-artifact-node-id="handoff-note">Artifact v1 is private by default in the Artifact WApp. The page is structured for anchored review comments on the video frame, individual scenes, script panel, timeline canvas, and production notes.</p>
+  </main>
+
+  <script>
+    const scenes = [
+      {
+        start: 0,
+        end: 21,
+        title: "0-21s: Power hook",
+        short: "Power hook",
+        color: "#1f7a61",
+        voiceover: "Most AI tools stop at chat. Wingman keeps going. It can receive work, create tasks, run agents, use memory, launch apps, and hand results back to people.",
+        visual: "Rapid montage from request to task to agent to app to result.",
+        onscreen: "Chat -> Task -> Agent -> App -> Result"
+      },
+      {
+        start: 21,
+        end: 45,
+        title: "21-45s: Flight Deck",
+        short: "Flight Deck",
+        color: "#335f9e",
+        voiceover: "Flight Deck is the shared cockpit. It is where people see the work, steer agents, approve decisions, and inspect outcomes.",
+        visual: "Task board, chat thread, comments, docs, files, approvals, and WApp launcher.",
+        onscreen: "The human cockpit for agent work"
+      },
+      {
+        start: 45,
+        end: 68,
+        title: "45-68s: Autopilot",
+        short: "Autopilot",
+        color: "#bb7a24",
+        voiceover: "Autopilot is the runtime. It starts sessions, runs pipelines, responds to triggers, and manages the apps agents use.",
+        visual: "Agent session launches, pipeline steps execute, validation lands back on the task.",
+        onscreen: "Repeatable AI work, not one-off prompts"
+      },
+      {
+        start: 68,
+        end: 88,
+        title: "68-88s: Tower",
+        short: "Tower",
+        color: "#6e4b73",
+        voiceover: "Tower is the system of record: auth, tasks, messages, docs, files, storage, graph memory, and the APIs that make the work durable.",
+        visual: "State layer diagram connecting people, agents, apps, storage, and memory.",
+        onscreen: "Durable. Permissioned. Shared."
+      },
+      {
+        start: 88,
+        end: 110,
+        title: "88-110s: WApps",
+        short: "WApps",
+        color: "#b14d3a",
+        voiceover: "WApps are where Wingman becomes business-specific. When chat is too small for the job, the workflow gets its own interface.",
+        visual: "Custom app cards for client intake, proposal building, operations review, and approvals.",
+        onscreen: "Custom apps for real workflows"
+      },
+      {
+        start: 110,
+        end: 120,
+        title: "110-120s: Close",
+        short: "Close",
+        color: "#111711",
+        voiceover: "Wingman Suite moves teams from AI chat to AI operations: agents, apps, memory, workflows, and human control running together.",
+        visual: "All four suite components lock together around a completed result.",
+        onscreen: "From AI chat to AI operations"
+      }
+    ];
+
+    const state = {
+      time: 0,
+      playing: false,
+      lastTick: 0
+    };
+
+    const els = {
+      timecode: document.getElementById("timecode"),
+      timelineTime: document.getElementById("timelineTime"),
+      scrubber: document.getElementById("scrubber"),
+      playBtn: document.getElementById("playBtn"),
+      backBtn: document.getElementById("backBtn"),
+      nextBtn: document.getElementById("nextBtn"),
+      currentTitle: document.getElementById("currentTitle"),
+      voiceover: document.getElementById("voiceover"),
+      visual: document.getElementById("visual"),
+      onscreen: document.getElementById("onscreen"),
+      beatList: document.getElementById("beatList"),
+      timeline: document.getElementById("timeline")
+    };
+
+    function fmt(seconds) {
+      const total = Math.max(0, Math.min(120, Math.floor(seconds)));
+      const m = String(Math.floor(total / 60)).padStart(2, "0");
+      const s = String(total % 60).padStart(2, "0");
+      return `${m}:${s}`;
+    }
+
+    function activeSceneIndex(time) {
+      return scenes.findIndex((scene, index) => time >= scene.start && (time < scene.end || index === scenes.length - 1));
+    }
+
+    function setTime(nextTime) {
+      state.time = Math.max(0, Math.min(120, nextTime));
+      const index = Math.max(0, activeSceneIndex(state.time));
+      const scene = scenes[index];
+      document.querySelectorAll(".scene").forEach((node) => {
+        node.classList.toggle("active", Number(node.dataset.scene) === index);
+      });
+      document.querySelectorAll(".beat").forEach((node) => {
+        node.classList.toggle("active", Number(node.dataset.index) === index);
+      });
+      els.timecode.textContent = fmt(state.time);
+      els.timelineTime.textContent = `${fmt(state.time)} / 02:00`;
+      els.scrubber.value = state.time;
+      els.currentTitle.textContent = scene.title;
+      els.voiceover.textContent = scene.voiceover;
+      els.visual.textContent = scene.visual;
+      els.onscreen.textContent = scene.onscreen;
+      drawTimeline();
+    }
+
+    function drawTimeline() {
+      const canvas = els.timeline;
+      const ctx = canvas.getContext("2d");
+      const w = canvas.width;
+      const h = canvas.height;
+      ctx.clearRect(0, 0, w, h);
+      ctx.fillStyle = "#fffefa";
+      ctx.fillRect(0, 0, w, h);
+
+      const left = 48;
+      const right = w - 30;
+      const top = 52;
+      const barH = 54;
+      const usable = right - left;
+
+      ctx.fillStyle = "#10130f";
+      ctx.font = "800 18px Inter, sans-serif";
+      ctx.fillText("120 second video structure", left, 28);
+      ctx.fillStyle = "#636961";
+      ctx.font = "700 12px Inter, sans-serif";
+      ctx.fillText("Opening thesis inside 21 seconds, then one clear product layer at a time.", left, 46);
+
+      scenes.forEach((scene) => {
+        const x = left + (scene.start / 120) * usable;
+        const width = ((scene.end - scene.start) / 120) * usable;
+        ctx.fillStyle = scene.color;
+        ctx.fillRect(x, top, width - 2, barH);
+        ctx.fillStyle = "#ffffff";
+        ctx.font = "800 13px Inter, sans-serif";
+        ctx.fillText(scene.short, x + 10, top + 22);
+        ctx.font = "700 12px Inter, sans-serif";
+        ctx.fillText(`${scene.start}-${scene.end}s`, x + 10, top + 40);
+      });
+
+      ctx.strokeStyle = "#d3d5ca";
+      ctx.lineWidth = 1;
+      ctx.beginPath();
+      ctx.moveTo(left, top + barH + 22);
+      ctx.lineTo(right, top + barH + 22);
+      ctx.stroke();
+
+      for (let tick = 0; tick <= 120; tick += 15) {
+        const x = left + (tick / 120) * usable;
+        ctx.strokeStyle = tick % 30 === 0 ? "#10130f" : "#9ca197";
+        ctx.beginPath();
+        ctx.moveTo(x, top + barH + 15);
+        ctx.lineTo(x, top + barH + 29);
+        ctx.stroke();
+        ctx.fillStyle = "#636961";
+        ctx.font = "700 11px Inter, sans-serif";
+        ctx.fillText(`${tick}s`, x - 10, top + barH + 48);
+      }
+
+      const px = left + (state.time / 120) * usable;
+      ctx.strokeStyle = "#10130f";
+      ctx.lineWidth = 3;
+      ctx.beginPath();
+      ctx.moveTo(px, top - 12);
+      ctx.lineTo(px, top + barH + 66);
+      ctx.stroke();
+      ctx.fillStyle = "#10130f";
+      ctx.beginPath();
+      ctx.arc(px, top - 14, 7, 0, Math.PI * 2);
+      ctx.fill();
+    }
+
+    function buildBeats() {
+      els.beatList.innerHTML = scenes.map((scene, index) => `
+        <button class="beat" type="button" data-index="${index}" data-artifact-node-id="beat-${index}">
+          <time>${scene.start}-${scene.end}s</time>
+          <span><b>${scene.short}</b><span>${scene.onscreen}</span></span>
+        </button>
+      `).join("");
+      els.beatList.querySelectorAll(".beat").forEach((beat) => {
+        beat.addEventListener("click", () => setTime(scenes[Number(beat.dataset.index)].start));
+      });
+    }
+
+    function nextBeat() {
+      const index = activeSceneIndex(state.time);
+      const next = scenes[Math.min(scenes.length - 1, index + 1)];
+      setTime(next.start);
+    }
+
+    function tick(now) {
+      if (!state.lastTick) state.lastTick = now;
+      const delta = (now - state.lastTick) / 1000;
+      state.lastTick = now;
+      if (state.playing) {
+        setTime(state.time + delta);
+        if (state.time >= 120) {
+          state.playing = false;
+          els.playBtn.textContent = "Play";
+        }
+      }
+      requestAnimationFrame(tick);
+    }
+
+    els.playBtn.addEventListener("click", () => {
+      state.playing = !state.playing;
+      if (state.time >= 120) setTime(0);
+      els.playBtn.textContent = state.playing ? "Pause" : "Play";
+      state.lastTick = 0;
+    });
+
+    els.backBtn.addEventListener("click", () => setTime(state.time - 5));
+    els.nextBtn.addEventListener("click", nextBeat);
+    els.scrubber.addEventListener("input", (event) => setTime(Number(event.target.value)));
+    els.timeline.addEventListener("click", (event) => {
+      const rect = els.timeline.getBoundingClientRect();
+      const ratio = Math.max(0, Math.min(1, (event.clientX - rect.left) / rect.width));
+      setTime(ratio * 120);
+    });
+
+    buildBeats();
+    setTime(0);
+    requestAnimationFrame(tick);
+  </script>
+</body>
+</html>

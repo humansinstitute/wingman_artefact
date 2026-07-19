@@ -1,0 +1,546 @@
+[
+  {
+    "shot": 1,
+    "time": "0.0-1.8s",
+    "phase": "hook",
+    "headline": "Most AI stops at chat.",
+    "subline": "Wingman keeps going.",
+    "layout": "hero"
+  },
+  {
+    "shot": 2,
+    "time": "1.8-3.5s",
+    "phase": "hook",
+    "headline": "A request lands.",
+    "subline": "It becomes work.",
+    "layout": "chat"
+  },
+  {
+    "shot": 3,
+    "time": "3.5-5.3s",
+    "phase": "hook",
+    "headline": "Chat -> task.",
+    "subline": "Context stays attached.",
+    "layout": "flow"
+  },
+  {
+    "shot": 4,
+    "time": "5.3-7.1s",
+    "phase": "hook",
+    "headline": "Task -> agent.",
+    "subline": "Fresh worker, clear brief.",
+    "layout": "agent"
+  },
+  {
+    "shot": 5,
+    "time": "7.1-8.8s",
+    "phase": "hook",
+    "headline": "Agent -> app.",
+    "subline": "The right interface opens.",
+    "layout": "wapp"
+  },
+  {
+    "shot": 6,
+    "time": "8.8-10.6s",
+    "phase": "hook",
+    "headline": "App -> result.",
+    "subline": "Back where the team works.",
+    "layout": "result"
+  },
+  {
+    "shot": 7,
+    "time": "10.6-12.4s",
+    "phase": "hook",
+    "headline": "This is not a bot.",
+    "subline": "It is an operating layer.",
+    "layout": "hero"
+  },
+  {
+    "shot": 8,
+    "time": "12.4-14.1s",
+    "phase": "hook",
+    "headline": "AI that runs work.",
+    "subline": "People stay in control.",
+    "layout": "system"
+  },
+  {
+    "shot": 9,
+    "time": "14.1-15.9s",
+    "phase": "flight deck",
+    "headline": "Flight Deck is the cockpit.",
+    "subline": "Humans and agents share one surface.",
+    "layout": "deck"
+  },
+  {
+    "shot": 10,
+    "time": "15.9-17.6s",
+    "phase": "flight deck",
+    "headline": "Threads become tasks.",
+    "subline": "No work disappears into chat.",
+    "layout": "chat"
+  },
+  {
+    "shot": 11,
+    "time": "17.6-19.4s",
+    "phase": "flight deck",
+    "headline": "Boards show status.",
+    "subline": "Ready, doing, review, shipped.",
+    "layout": "board"
+  },
+  {
+    "shot": 12,
+    "time": "19.4-21.2s",
+    "phase": "flight deck",
+    "headline": "Comments carry evidence.",
+    "subline": "Decisions are inspectable.",
+    "layout": "comments"
+  },
+  {
+    "shot": 13,
+    "time": "21.2-22.9s",
+    "phase": "flight deck",
+    "headline": "Docs sit beside work.",
+    "subline": "Context is not a scavenger hunt.",
+    "layout": "docs"
+  },
+  {
+    "shot": 14,
+    "time": "22.9-24.7s",
+    "phase": "flight deck",
+    "headline": "Files stay attached.",
+    "subline": "Screens, audio, notes, artifacts.",
+    "layout": "files"
+  },
+  {
+    "shot": 15,
+    "time": "24.7-26.5s",
+    "phase": "flight deck",
+    "headline": "Approvals slow the risk.",
+    "subline": "Not the whole system.",
+    "layout": "approval"
+  },
+  {
+    "shot": 16,
+    "time": "26.5-28.2s",
+    "phase": "flight deck",
+    "headline": "Agents report back.",
+    "subline": "The handoff is visible.",
+    "layout": "handoff"
+  },
+  {
+    "shot": 17,
+    "time": "28.2-30.0s",
+    "phase": "flight deck",
+    "headline": "Launch the app.",
+    "subline": "From the same workspace.",
+    "layout": "launcher"
+  },
+  {
+    "shot": 18,
+    "time": "30.0-31.8s",
+    "phase": "flight deck",
+    "headline": "Flight Deck is control.",
+    "subline": "Not another inbox.",
+    "layout": "deck"
+  },
+  {
+    "shot": 19,
+    "time": "31.8-33.5s",
+    "phase": "autopilot",
+    "headline": "Autopilot is runtime.",
+    "subline": "Sessions, workers, pipelines, triggers.",
+    "layout": "terminal"
+  },
+  {
+    "shot": 20,
+    "time": "33.5-35.3s",
+    "phase": "autopilot",
+    "headline": "Start a session.",
+    "subline": "Give it a real goal.",
+    "layout": "agent"
+  },
+  {
+    "shot": 21,
+    "time": "35.3-37.1s",
+    "phase": "autopilot",
+    "headline": "Dispatch a worker.",
+    "subline": "Focused repo, focused outcome.",
+    "layout": "dispatch"
+  },
+  {
+    "shot": 22,
+    "time": "37.1-38.8s",
+    "phase": "autopilot",
+    "headline": "Run a pipeline.",
+    "subline": "Repeat the process.",
+    "layout": "pipeline"
+  },
+  {
+    "shot": 23,
+    "time": "38.8-40.6s",
+    "phase": "autopilot",
+    "headline": "Trigger from events.",
+    "subline": "Schedules, tasks, chats, apps.",
+    "layout": "trigger"
+  },
+  {
+    "shot": 24,
+    "time": "40.6-42.4s",
+    "phase": "autopilot",
+    "headline": "Validate with commands.",
+    "subline": "Evidence before confidence.",
+    "layout": "terminal"
+  },
+  {
+    "shot": 25,
+    "time": "42.4-44.1s",
+    "phase": "autopilot",
+    "headline": "Host managed apps.",
+    "subline": "Ports, aliases, live links.",
+    "layout": "apps"
+  },
+  {
+    "shot": 26,
+    "time": "44.1-45.9s",
+    "phase": "autopilot",
+    "headline": "Keep runs observable.",
+    "subline": "Logs, state, handoffs.",
+    "layout": "observability"
+  },
+  {
+    "shot": 27,
+    "time": "45.9-47.6s",
+    "phase": "autopilot",
+    "headline": "Autopilot makes AI repeatable.",
+    "subline": "The work can run again.",
+    "layout": "pipeline"
+  },
+  {
+    "shot": 28,
+    "time": "47.6-49.4s",
+    "phase": "autopilot",
+    "headline": "Prompts become process.",
+    "subline": "Process becomes infrastructure.",
+    "layout": "system"
+  },
+  {
+    "shot": 29,
+    "time": "49.4-51.2s",
+    "phase": "tower",
+    "headline": "Tower is the record.",
+    "subline": "The durable truth underneath.",
+    "layout": "tower"
+  },
+  {
+    "shot": 30,
+    "time": "51.2-52.9s",
+    "phase": "tower",
+    "headline": "Auth is signed.",
+    "subline": "Workspace access is explicit.",
+    "layout": "auth"
+  },
+  {
+    "shot": 31,
+    "time": "52.9-54.7s",
+    "phase": "tower",
+    "headline": "Tasks are typed records.",
+    "subline": "Agents and humans use the same state.",
+    "layout": "records"
+  },
+  {
+    "shot": 32,
+    "time": "54.7-56.5s",
+    "phase": "tower",
+    "headline": "Messages are addressable.",
+    "subline": "Threads do not vanish.",
+    "layout": "messages"
+  },
+  {
+    "shot": 33,
+    "time": "56.5-58.2s",
+    "phase": "tower",
+    "headline": "Docs have bodies.",
+    "subline": "Comments have anchors.",
+    "layout": "docs"
+  },
+  {
+    "shot": 34,
+    "time": "58.2-60.0s",
+    "phase": "tower",
+    "headline": "Files have storage.",
+    "subline": "Metadata and object access.",
+    "layout": "storage"
+  },
+  {
+    "shot": 35,
+    "time": "60.0-61.8s",
+    "phase": "tower",
+    "headline": "Memory becomes graph.",
+    "subline": "Evidence, people, repos, decisions.",
+    "layout": "graph"
+  },
+  {
+    "shot": 36,
+    "time": "61.8-63.5s",
+    "phase": "tower",
+    "headline": "APIs are the boundary.",
+    "subline": "Apps build on shared state.",
+    "layout": "api"
+  },
+  {
+    "shot": 37,
+    "time": "63.5-65.3s",
+    "phase": "tower",
+    "headline": "Tower keeps trust.",
+    "subline": "Durable, permissioned, queryable.",
+    "layout": "tower"
+  },
+  {
+    "shot": 38,
+    "time": "65.3-67.1s",
+    "phase": "tower",
+    "headline": "Everything has a place.",
+    "subline": "So agents can work safely.",
+    "layout": "records"
+  },
+  {
+    "shot": 39,
+    "time": "67.1-68.8s",
+    "phase": "wapps",
+    "headline": "WApps are the unlock.",
+    "subline": "When chat is too small.",
+    "layout": "wapp"
+  },
+  {
+    "shot": 40,
+    "time": "68.8-70.6s",
+    "phase": "wapps",
+    "headline": "Custom intake.",
+    "subline": "The workflow gets a home.",
+    "layout": "intake"
+  },
+  {
+    "shot": 41,
+    "time": "70.6-72.4s",
+    "phase": "wapps",
+    "headline": "Research console.",
+    "subline": "Agents enrich the case.",
+    "layout": "research"
+  },
+  {
+    "shot": 42,
+    "time": "72.4-74.1s",
+    "phase": "wapps",
+    "headline": "Proposal builder.",
+    "subline": "Human approves the package.",
+    "layout": "proposal"
+  },
+  {
+    "shot": 43,
+    "time": "74.1-75.9s",
+    "phase": "wapps",
+    "headline": "Ops dashboard.",
+    "subline": "Live status without digging.",
+    "layout": "dashboard"
+  },
+  {
+    "shot": 44,
+    "time": "75.9-77.6s",
+    "phase": "wapps",
+    "headline": "Pipeline control.",
+    "subline": "Run, inspect, retry, approve.",
+    "layout": "pipelineApp"
+  },
+  {
+    "shot": 45,
+    "time": "77.6-79.4s",
+    "phase": "wapps",
+    "headline": "Client-specific UI.",
+    "subline": "Without bloating Flight Deck.",
+    "layout": "custom"
+  },
+  {
+    "shot": 46,
+    "time": "79.4-81.2s",
+    "phase": "wapps",
+    "headline": "Agents can use the app.",
+    "subline": "People can use it too.",
+    "layout": "sharedApp"
+  },
+  {
+    "shot": 47,
+    "time": "81.2-82.9s",
+    "phase": "wapps",
+    "headline": "Ship the workflow.",
+    "subline": "Not just the prompt.",
+    "layout": "ship"
+  },
+  {
+    "shot": 48,
+    "time": "82.9-84.7s",
+    "phase": "wapps",
+    "headline": "WApps make it real.",
+    "subline": "Business-specific AI systems.",
+    "layout": "wapp"
+  },
+  {
+    "shot": 49,
+    "time": "84.7-86.5s",
+    "phase": "examples",
+    "headline": "A lead comes in.",
+    "subline": "Kindling starts research.",
+    "layout": "research"
+  },
+  {
+    "shot": 50,
+    "time": "86.5-88.2s",
+    "phase": "examples",
+    "headline": "The task appears.",
+    "subline": "Flight Deck tracks ownership.",
+    "layout": "board"
+  },
+  {
+    "shot": 51,
+    "time": "88.2-90.0s",
+    "phase": "examples",
+    "headline": "A worker investigates.",
+    "subline": "Autopilot runs the session.",
+    "layout": "terminal"
+  },
+  {
+    "shot": 52,
+    "time": "90.0-91.8s",
+    "phase": "examples",
+    "headline": "Tower recalls context.",
+    "subline": "Graph memory returns evidence.",
+    "layout": "graph"
+  },
+  {
+    "shot": 53,
+    "time": "91.8-93.5s",
+    "phase": "examples",
+    "headline": "A WApp opens.",
+    "subline": "The team works in the right shape.",
+    "layout": "wapp"
+  },
+  {
+    "shot": 54,
+    "time": "93.5-95.3s",
+    "phase": "examples",
+    "headline": "A draft is generated.",
+    "subline": "The app exposes the choices.",
+    "layout": "proposal"
+  },
+  {
+    "shot": 55,
+    "time": "95.3-97.1s",
+    "phase": "examples",
+    "headline": "Approval is requested.",
+    "subline": "Humans decide the risk.",
+    "layout": "approval"
+  },
+  {
+    "shot": 56,
+    "time": "97.1-98.8s",
+    "phase": "examples",
+    "headline": "Result is attached.",
+    "subline": "Files, comments, artifact.",
+    "layout": "handoff"
+  },
+  {
+    "shot": 57,
+    "time": "98.8-100.6s",
+    "phase": "examples",
+    "headline": "The process repeats.",
+    "subline": "Next client, same system.",
+    "layout": "pipeline"
+  },
+  {
+    "shot": 58,
+    "time": "100.6-102.4s",
+    "phase": "examples",
+    "headline": "This is operating leverage.",
+    "subline": "Not chat theatre.",
+    "layout": "hero"
+  },
+  {
+    "shot": 59,
+    "time": "102.4-104.1s",
+    "phase": "close",
+    "headline": "One request.",
+    "subline": "Many coordinated surfaces.",
+    "layout": "flow"
+  },
+  {
+    "shot": 60,
+    "time": "104.1-105.9s",
+    "phase": "close",
+    "headline": "One machine.",
+    "subline": "Agents, apps, memory, workflows.",
+    "layout": "system"
+  },
+  {
+    "shot": 61,
+    "time": "105.9-107.6s",
+    "phase": "close",
+    "headline": "One workspace.",
+    "subline": "People can see and steer.",
+    "layout": "deck"
+  },
+  {
+    "shot": 62,
+    "time": "107.6-109.4s",
+    "phase": "close",
+    "headline": "One record.",
+    "subline": "Tower keeps the truth.",
+    "layout": "tower"
+  },
+  {
+    "shot": 63,
+    "time": "109.4-111.2s",
+    "phase": "close",
+    "headline": "One runtime.",
+    "subline": "Autopilot runs the work.",
+    "layout": "terminal"
+  },
+  {
+    "shot": 64,
+    "time": "111.2-112.9s",
+    "phase": "close",
+    "headline": "One extension model.",
+    "subline": "WApps shape the business.",
+    "layout": "launcher"
+  },
+  {
+    "shot": 65,
+    "time": "112.9-114.7s",
+    "phase": "close",
+    "headline": "AI chat was the start.",
+    "subline": "AI operations is the move.",
+    "layout": "hero"
+  },
+  {
+    "shot": 66,
+    "time": "114.7-116.5s",
+    "phase": "close",
+    "headline": "Wingman Suite.",
+    "subline": "AI that actually runs work.",
+    "layout": "final"
+  },
+  {
+    "shot": 67,
+    "time": "116.5-118.2s",
+    "phase": "close",
+    "headline": "Build the system.",
+    "subline": "Run the work.",
+    "layout": "final"
+  },
+  {
+    "shot": 68,
+    "time": "118.2-120.0s",
+    "phase": "close",
+    "headline": "Wingman.",
+    "subline": "From chat to operations.",
+    "layout": "final"
+  }
+]

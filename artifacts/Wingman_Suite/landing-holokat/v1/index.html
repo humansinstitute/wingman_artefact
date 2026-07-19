@@ -1,0 +1,527 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Wingman Suite</title>
+  <meta name="description" content="Wingman Suite is a self-hosted agent operations stack for orchestrating AI agents, shared work, apps, workflows, and teams.">
+  <meta property="og:title" content="Wingman Suite">
+  <meta property="og:description" content="Autopilot runs the agents. Flight Deck coordinates the people. Tower keeps the shared state. Skills make the work repeatable.">
+  <meta property="og:image" content="./wingman-suite-poster.png">
+  <style>
+    :root {
+      color-scheme: light;
+      --ink: #121a17;
+      --muted: #50615b;
+      --line: #d9e0dc;
+      --paper: #f8f7f1;
+      --panel: #ffffff;
+      --green: #12765c;
+      --green-dark: #0b3d31;
+      --cyan: #2697a4;
+      --amber: #d99a27;
+      --rust: #b6513c;
+      --violet: #76507d;
+      --shadow: 0 22px 60px rgba(18, 26, 23, 0.12);
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      color: var(--ink);
+      background: var(--paper);
+      letter-spacing: 0;
+      overflow-x: hidden;
+    }
+
+    a { color: inherit; }
+
+    .page { overflow: hidden; }
+
+    .shell {
+      width: min(1120px, calc(100vw - 40px));
+      margin: 0 auto;
+    }
+
+    .hero {
+      min-height: 92vh;
+      display: grid;
+      align-items: center;
+      padding: 32px 0 54px;
+      background: var(--paper);
+      border-bottom: 1px solid var(--line);
+    }
+
+    .nav {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 18px;
+      margin-bottom: 80px;
+      font-size: 14px;
+      color: var(--muted);
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      color: var(--ink);
+      font-weight: 800;
+    }
+
+    .mark {
+      width: 38px;
+      height: 38px;
+      display: grid;
+      place-items: center;
+      border-radius: 50%;
+      background: var(--ink);
+      color: #fff;
+      font-weight: 900;
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 18px;
+      flex-wrap: wrap;
+      justify-content: flex-end;
+    }
+
+    .nav-links a {
+      text-decoration: none;
+      border-bottom: 1px solid transparent;
+    }
+
+    .nav-links a:hover { border-color: currentColor; }
+
+    .hero-copy {
+      width: min(660px, 100%);
+    }
+
+    .hero-layout {
+      display: grid;
+      grid-template-columns: minmax(0, 0.94fr) minmax(360px, 0.86fr);
+      gap: 44px;
+      align-items: center;
+    }
+
+    .hero-visual {
+      align-self: stretch;
+      min-height: 520px;
+      margin: 0;
+      border: 1px solid var(--line);
+      background: #fff;
+      box-shadow: var(--shadow);
+      overflow: hidden;
+      border-radius: 8px;
+    }
+
+    .hero-visual img {
+      width: 100%;
+      height: 100%;
+      display: block;
+      object-fit: cover;
+      object-position: 82% 50%;
+    }
+
+    .eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 9px;
+      margin-bottom: 22px;
+      padding: 8px 11px;
+      border: 1px solid rgba(18, 26, 23, 0.14);
+      background: rgba(255, 255, 255, 0.64);
+      font-size: 13px;
+      font-weight: 750;
+      color: var(--green-dark);
+    }
+
+    .eyebrow::before {
+      content: "";
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: var(--green);
+    }
+
+    h1 {
+      max-width: 780px;
+      margin: 0;
+      font-size: clamp(48px, 8vw, 96px);
+      line-height: 0.9;
+      letter-spacing: 0;
+    }
+
+    .mobile-only { display: none; }
+
+    .lead {
+      max-width: 640px;
+      margin: 28px 0 0;
+      font-size: clamp(19px, 2.2vw, 26px);
+      line-height: 1.35;
+      color: #263630;
+    }
+
+    .actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      margin-top: 34px;
+    }
+
+    .button {
+      display: inline-flex;
+      min-height: 46px;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      padding: 0 18px;
+      border: 1px solid var(--ink);
+      background: var(--ink);
+      color: #fff;
+      text-decoration: none;
+      font-weight: 800;
+      border-radius: 6px;
+    }
+
+    .button.secondary {
+      background: rgba(255, 255, 255, 0.74);
+      color: var(--ink);
+    }
+
+    .section {
+      padding: 72px 0;
+      border-bottom: 1px solid var(--line);
+    }
+
+    .section.alt { background: #fff; }
+
+    .intro-grid {
+      display: grid;
+      grid-template-columns: 0.9fr 1.1fr;
+      gap: 44px;
+      align-items: start;
+    }
+
+    h2 {
+      margin: 0;
+      font-size: clamp(32px, 4.8vw, 58px);
+      line-height: 0.98;
+      letter-spacing: 0;
+    }
+
+    .section p {
+      margin: 0;
+      color: var(--muted);
+      font-size: 18px;
+      line-height: 1.58;
+    }
+
+    .stack {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 14px;
+      margin-top: 28px;
+    }
+
+    .module {
+      min-height: 210px;
+      padding: 20px;
+      border: 1px solid var(--line);
+      background: var(--panel);
+      box-shadow: 0 8px 24px rgba(18, 26, 23, 0.06);
+      border-radius: 8px;
+    }
+
+    .module strong {
+      display: block;
+      margin-bottom: 44px;
+      font-size: 18px;
+    }
+
+    .module p {
+      font-size: 15px;
+      line-height: 1.45;
+    }
+
+    .module.autopilot { border-top: 6px solid var(--green); }
+    .module.flight { border-top: 6px solid var(--cyan); }
+    .module.tower { border-top: 6px solid var(--violet); }
+    .module.skills { border-top: 6px solid var(--amber); }
+
+    .workflow {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 18px;
+      margin-top: 34px;
+    }
+
+    .step {
+      min-height: 230px;
+      padding: 22px;
+      border: 1px solid rgba(18, 26, 23, 0.12);
+      background: var(--green-dark);
+      color: #fff;
+      border-radius: 8px;
+      box-shadow: var(--shadow);
+    }
+
+    .step:nth-child(2) { background: #163f48; }
+    .step:nth-child(3) { background: #493453; }
+
+    .step span {
+      display: block;
+      margin-bottom: 42px;
+      color: rgba(255, 255, 255, 0.62);
+      font-weight: 900;
+    }
+
+    .step h3 {
+      margin: 0 0 12px;
+      font-size: 24px;
+      line-height: 1.08;
+    }
+
+    .step p {
+      color: rgba(255, 255, 255, 0.78);
+      font-size: 16px;
+      line-height: 1.48;
+    }
+
+    .callout {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 30px;
+      align-items: center;
+    }
+
+    .visual {
+      border: 1px solid var(--line);
+      background: #fff;
+      padding: 14px;
+      box-shadow: var(--shadow);
+      border-radius: 8px;
+    }
+
+    .visual img {
+      display: block;
+      width: 100%;
+      height: auto;
+      border-radius: 4px;
+    }
+
+    .repo-list {
+      display: grid;
+      gap: 10px;
+      margin-top: 24px;
+    }
+
+    .repo {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      padding: 15px 16px;
+      border: 1px solid var(--line);
+      background: #fff;
+      text-decoration: none;
+      border-radius: 8px;
+    }
+
+    .repo b { font-size: 16px; }
+    .repo small { color: var(--muted); }
+    .repo:hover { border-color: rgba(18, 26, 23, 0.42); }
+
+    .footer {
+      padding: 38px 0;
+      color: var(--muted);
+      font-size: 14px;
+    }
+
+    @media (max-width: 860px) {
+      .hero {
+        min-height: 86vh;
+        padding-bottom: 44px;
+      }
+
+      .nav {
+        align-items: flex-start;
+        margin-bottom: 58px;
+      }
+
+      .nav-links { display: none; }
+      .intro-grid,
+      .callout,
+      .hero-layout {
+        grid-template-columns: 1fr;
+      }
+
+      .hero-visual {
+        min-height: 260px;
+        order: -1;
+      }
+
+      .stack,
+      .workflow {
+        grid-template-columns: 1fr;
+      }
+
+      .module,
+      .step {
+        min-height: auto;
+      }
+
+      .module strong,
+      .step span {
+        margin-bottom: 24px;
+      }
+    }
+
+    @media (max-width: 520px) {
+      .shell {
+        width: calc(100% - 28px);
+        max-width: 1120px;
+      }
+
+      .hero {
+        padding-top: 22px;
+      }
+
+      h1 {
+        max-width: 100%;
+        font-size: clamp(38px, 10.7vw, 42px);
+        line-height: 0.96;
+      }
+
+      .mobile-only { display: initial; }
+
+      .hero-copy,
+      .lead {
+        max-width: 100%;
+        min-width: 0;
+      }
+
+      .lead {
+        font-size: 16px;
+        line-height: 1.46;
+      }
+      .section { padding: 52px 0; }
+      .actions { align-items: stretch; }
+      .button { width: 100%; }
+      .repo { align-items: flex-start; flex-direction: column; }
+    }
+  </style>
+</head>
+<body>
+  <main class="page">
+    <section class="hero">
+      <div class="shell">
+        <nav class="nav" aria-label="Primary">
+          <div class="brand"><span class="mark">W</span><span>Wingman Suite</span></div>
+          <div class="nav-links">
+            <a href="#suite">Suite</a>
+            <a href="#teams">Teams</a>
+            <a href="#repos">Repos</a>
+          </div>
+        </nav>
+
+        <div class="hero-layout">
+          <div class="hero-copy">
+            <div class="eyebrow">Autopilot-first agent operations</div>
+            <h1>Most AI stops <br class="mobile-only">at chat.<br>Wingman keeps <br class="mobile-only">going.</h1>
+            <p class="lead">Wingman is a self-hosted suite for running AI agents, coordinating the work they do, and keeping humans in the loop across projects, apps, workflows, files, and teams.</p>
+            <div class="actions">
+              <a class="button" href="#suite">See the stack</a>
+              <a class="button secondary" href="https://github.com/humansinstitute/wingman-suite">Installer</a>
+            </div>
+          </div>
+          <figure class="hero-visual" aria-label="Wingman Suite modules">
+            <img src="./wingman-suite-poster.png" alt="Wingman Suite visual with Flight Deck, Autopilot, Tower, and WApps as coordinated layers.">
+          </figure>
+        </div>
+      </div>
+    </section>
+
+    <section class="section alt">
+      <div class="shell intro-grid">
+        <h2>A shared workspace for people and agents.</h2>
+        <p>Think of it as a team operations layer for AI work. Autopilot can run Codex, Claude Code, Goose, Pi, and other agents. Flight Deck gives people a common surface for chat, tasks, docs, approvals, and project context. Tower provides the Nostr/NIP-98 authenticated backend, Postgres state, graph knowledge, storage, and encrypted sync when needed.</p>
+      </div>
+    </section>
+
+    <section class="section" id="suite">
+      <div class="shell">
+        <h2>The suite, in practical order.</h2>
+        <div class="stack">
+          <article class="module autopilot">
+            <strong>1. Autopilot</strong>
+            <p>Runs agent sessions, pipelines, triggers, managed apps, subdomain routing, files, and NIP-98 agent APIs.</p>
+          </article>
+          <article class="module flight">
+            <strong>2. Flight Deck</strong>
+            <p>The browser workspace for chat, tasks, docs, flows, approvals, scopes, and shared project coordination.</p>
+          </article>
+          <article class="module tower">
+            <strong>3. Tower</strong>
+            <p>The backend authority: Nostr auth, Postgres, graph knowledge, storage, SuperBased-style encrypted records, and typed APIs.</p>
+          </article>
+          <article class="module skills">
+            <strong>4. Skills</strong>
+            <p>Repeatable procedures agents can load so work moves from ad hoc prompts into reliable operating playbooks.</p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="section alt" id="teams">
+      <div class="shell">
+        <h2>Built for orchestration, not solo chat.</h2>
+        <div class="workflow">
+          <article class="step">
+            <span>01</span>
+            <h3>Spin up focused workers.</h3>
+            <p>Dispatch agents into the right repo, task, or pipeline with enough context to produce a tested result.</p>
+          </article>
+          <article class="step">
+            <span>02</span>
+            <h3>Keep the work visible.</h3>
+            <p>Humans can follow chats, board state, docs, artifacts, approvals, and handoffs in Flight Deck.</p>
+          </article>
+          <article class="step">
+            <span>03</span>
+            <h3>Coordinate across people.</h3>
+            <p>Teams can share scopes, projects, WApps, and workflows while each agent signs and acts with its own identity.</p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="repos">
+      <div class="shell callout">
+        <div>
+          <h2>Start from the open pieces.</h2>
+          <p>These are the links Pete shared in the thread: the workspace UI, the agent runtime, the backend, the skills, and the installer that pulls the stack together.</p>
+          <div class="repo-list">
+            <a class="repo" href="https://github.com/humansinstitute/wingman-autopilot"><b>wingman-autopilot</b><small>agents, pipelines, apps</small></a>
+            <a class="repo" href="https://github.com/humansinstitute/wingman-fd-2"><b>wingman-fd-2</b><small>Flight Deck UI</small></a>
+            <a class="repo" href="https://github.com/humansinstitute/wingman-tower"><b>wingman-tower</b><small>backend and graph state</small></a>
+            <a class="repo" href="https://github.com/humansinstitute/wingman-skills"><b>wingman-skills</b><small>repeatable agent workflows</small></a>
+            <a class="repo" href="https://github.com/humansinstitute/wingman-suite"><b>wingman-suite</b><small>installer</small></a>
+          </div>
+        </div>
+        <figure class="visual">
+          <img src="./wingman-suite-poster.png" alt="Wingman Suite visual showing Autopilot, Flight Deck, Tower, and WApps as coordinated layers.">
+        </figure>
+      </div>
+    </section>
+
+    <footer class="footer">
+      <div class="shell">Draft 1 landing page for sharing in the Nostr thread. Private Artifact WApp draft.</div>
+    </footer>
+  </main>
+</body>
+</html>

@@ -1,0 +1,916 @@
+<!doctype html>
+<html lang="en-AU">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Wingman Suite Example-Led Animatic v3</title>
+  <style>
+    :root {
+      --bg: #07110d;
+      --deep: #0d1f17;
+      --paper: #f7f4e8;
+      --cream: #fbf9ef;
+      --ink: #10130f;
+      --muted: #677068;
+      --line: #d4d6ca;
+      --green: #1f7a61;
+      --blue: #315f9b;
+      --amber: #bb7a24;
+      --plum: #6e4b73;
+      --red: #b14d3a;
+      --shadow: 0 28px 80px rgba(0, 0, 0, 0.24);
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      background:
+        radial-gradient(circle at 14% 10%, rgba(31, 122, 97, 0.24), transparent 30%),
+        linear-gradient(145deg, #07110d 0%, #10241a 58%, #161812 100%);
+      color: var(--paper);
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      overflow-x: hidden;
+    }
+
+    main {
+      width: min(1440px, calc(100vw - 28px));
+      margin: 0 auto;
+      padding: 18px 0 26px;
+      display: grid;
+      gap: 14px;
+    }
+
+    header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 18px;
+      color: #dbe6dc;
+      font-size: 13px;
+      font-weight: 800;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+    }
+
+    .brand {
+      display: inline-flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .header-actions {
+      display: inline-flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: flex-end;
+      gap: 14px;
+      min-width: 0;
+    }
+
+    .mark {
+      display: inline-grid;
+      place-items: center;
+      width: 38px;
+      height: 38px;
+      border-radius: 50%;
+      background: var(--paper);
+      color: var(--bg);
+      font-family: Impact, Arial Black, sans-serif;
+      font-size: 22px;
+      letter-spacing: 0;
+    }
+
+    .stage-wrap {
+      border: 1px solid rgba(247, 244, 232, 0.16);
+      border-radius: 8px;
+      background: rgba(0, 0, 0, 0.25);
+      box-shadow: var(--shadow);
+      padding: 14px;
+    }
+
+    .stage {
+      position: relative;
+      aspect-ratio: 16 / 9;
+      min-height: 520px;
+      overflow: hidden;
+      border-radius: 7px;
+      background: #07110d;
+      color: var(--paper);
+      isolation: isolate;
+    }
+
+    .scene {
+      position: absolute;
+      inset: 0;
+      display: grid;
+      grid-template-columns: minmax(0, 0.9fr) minmax(520px, 1.1fr);
+      gap: 34px;
+      align-items: center;
+      padding: 52px 58px;
+      opacity: 0;
+      transform: translateX(18px);
+      transition: opacity 500ms ease, transform 500ms ease;
+      pointer-events: none;
+    }
+
+    .scene.active {
+      opacity: 1;
+      transform: translateX(0);
+      pointer-events: auto;
+    }
+
+    .scene::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background:
+        radial-gradient(circle at 22% 18%, rgba(31, 122, 97, 0.22), transparent 30%),
+        linear-gradient(112deg, rgba(7, 17, 13, 0.98) 0%, rgba(10, 25, 18, 0.98) 48%, rgba(247, 244, 232, 0.96) 48.2%, rgba(239, 237, 225, 0.98) 100%);
+      z-index: -2;
+    }
+
+    .scene::after {
+      content: "";
+      position: absolute;
+      right: 10%;
+      top: 12%;
+      width: 420px;
+      height: 420px;
+      border-radius: 50%;
+      background: var(--accent, var(--green));
+      opacity: 0.13;
+      filter: blur(2px);
+      z-index: -1;
+      animation: drift 9s ease-in-out infinite alternate;
+    }
+
+    @keyframes drift {
+      from { transform: translate(-20px, 8px) scale(0.96); }
+      to { transform: translate(24px, -16px) scale(1.06); }
+    }
+
+    .copy {
+      align-self: center;
+    }
+
+    .eyebrow {
+      margin-bottom: 16px;
+      color: #a7d4bb;
+      font-size: 13px;
+      font-weight: 900;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+    }
+
+    h1 {
+      margin: 0;
+      max-width: 560px;
+      font-family: Impact, Arial Black, sans-serif;
+      font-size: clamp(58px, 5.9vw, 92px);
+      font-weight: 400;
+      line-height: 0.94;
+      letter-spacing: 0;
+    }
+
+    .sub {
+      margin: 24px 0 0;
+      max-width: 560px;
+      color: #dfe9df;
+      font-size: 29px;
+      font-weight: 800;
+      line-height: 1.12;
+    }
+
+    .screen {
+      position: relative;
+      min-height: 500px;
+      border-radius: 10px;
+      background: #edf0e8;
+      color: var(--ink);
+      border: 1px solid rgba(16, 19, 15, 0.14);
+      box-shadow: 0 28px 80px rgba(0, 0, 0, 0.24);
+      overflow: hidden;
+    }
+
+    .topbar {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      height: 44px;
+      padding: 0 16px;
+      background: var(--ink);
+      color: var(--paper);
+      font-size: 15px;
+      font-weight: 800;
+    }
+
+    .dot {
+      width: 11px;
+      height: 11px;
+      border-radius: 50%;
+      background: var(--red);
+    }
+
+    .dot:nth-child(2) { background: var(--amber); }
+    .dot:nth-child(3) { background: var(--green); margin-right: 14px; }
+
+    .screen-body {
+      padding: 24px;
+      display: grid;
+      gap: 14px;
+    }
+
+    .card {
+      position: relative;
+      padding: 16px 18px 16px 22px;
+      border-radius: 8px;
+      background: #fffdf4;
+      border: 1px solid var(--line);
+      overflow: hidden;
+    }
+
+    .card::before {
+      content: "";
+      position: absolute;
+      left: 0;
+      top: 0;
+      bottom: 0;
+      width: 7px;
+      background: var(--accent, var(--green));
+    }
+
+    .card b {
+      display: block;
+      font-size: 20px;
+      margin-bottom: 4px;
+    }
+
+    .card span {
+      color: var(--muted);
+      font-size: 15px;
+      font-weight: 650;
+    }
+
+    .chat {
+      display: grid;
+      gap: 16px;
+      padding-top: 28px;
+    }
+
+    .bubble {
+      width: 76%;
+      padding: 16px 18px;
+      border-radius: 16px 16px 16px 4px;
+      background: #fffdf4;
+      border: 1px solid var(--line);
+      font-size: 20px;
+      font-weight: 750;
+      animation: pop 8s ease-in-out infinite;
+    }
+
+    .bubble.agent {
+      justify-self: end;
+      border-radius: 16px 16px 4px 16px;
+      background: #dfeee7;
+      animation-delay: 1.4s;
+    }
+
+    @keyframes pop {
+      0%, 20% { transform: translateY(12px); opacity: 0.2; }
+      30%, 100% { transform: translateY(0); opacity: 1; }
+    }
+
+    .task-board {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 14px;
+    }
+
+    .lane {
+      min-height: 360px;
+      padding: 14px;
+      border-radius: 8px;
+      background: #fffdf4;
+      border: 1px solid var(--line);
+    }
+
+    .lane h3 {
+      margin: 0 0 16px;
+      font-size: 17px;
+    }
+
+    .mini-card {
+      margin-bottom: 12px;
+      padding: 12px;
+      border-radius: 7px;
+      background: #f1efe4;
+      border-left: 6px solid var(--accent, var(--green));
+      animation: slideIn 9s ease-in-out infinite;
+    }
+
+    .lane:nth-child(2) .mini-card { animation-delay: 1.4s; }
+    .lane:nth-child(3) .mini-card { animation-delay: 2.8s; }
+
+    @keyframes slideIn {
+      0%, 18% { transform: translateY(22px); opacity: 0; }
+      30%, 100% { transform: translateY(0); opacity: 1; }
+    }
+
+    .graph {
+      position: relative;
+      height: 430px;
+    }
+
+    .node {
+      position: absolute;
+      display: grid;
+      place-items: center;
+      width: 108px;
+      height: 108px;
+      border-radius: 50%;
+      background: #fffdf4;
+      border: 3px solid var(--accent, var(--green));
+      font-weight: 900;
+      text-align: center;
+      animation: pulse 4s ease-in-out infinite;
+    }
+
+    .node:nth-child(2) { animation-delay: 0.5s; }
+    .node:nth-child(3) { animation-delay: 1s; }
+    .node:nth-child(4) { animation-delay: 1.5s; }
+    .node:nth-child(5) { animation-delay: 2s; }
+
+    @keyframes pulse {
+      0%, 100% { transform: scale(1); }
+      50% { transform: scale(1.08); }
+    }
+
+    .edge {
+      position: absolute;
+      height: 4px;
+      background: var(--accent, var(--green));
+      transform-origin: left center;
+      opacity: 0.5;
+    }
+
+    .terminal {
+      height: 430px;
+      padding: 22px;
+      border-radius: 8px;
+      background: #07110d;
+      color: #dce9df;
+      font-family: Menlo, Consolas, monospace;
+      font-size: 21px;
+      overflow: hidden;
+    }
+
+    .term-line {
+      margin: 0 0 22px;
+      opacity: 0;
+      transform: translateY(14px);
+      animation: lineUp 10s ease-in-out infinite;
+    }
+
+    .term-line:nth-child(2) { animation-delay: 1s; }
+    .term-line:nth-child(3) { animation-delay: 2s; }
+    .term-line:nth-child(4) { animation-delay: 3s; }
+    .term-line:nth-child(5) { animation-delay: 4s; }
+    .term-line:nth-child(6) { animation-delay: 5s; }
+
+    @keyframes lineUp {
+      0%, 10% { opacity: 0; transform: translateY(14px); }
+      18%, 100% { opacity: 1; transform: translateY(0); }
+    }
+
+    .wapp-grid {
+      display: grid;
+      grid-template-columns: 1.1fr 0.9fr;
+      gap: 16px;
+    }
+
+    .form-stack {
+      display: grid;
+      gap: 12px;
+    }
+
+    .field {
+      min-height: 62px;
+      border-radius: 8px;
+      background: #fffdf4;
+      border: 1px solid var(--line);
+      padding: 10px 14px;
+    }
+
+    .field small {
+      display: block;
+      color: var(--muted);
+      font-weight: 850;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      margin-bottom: 6px;
+    }
+
+    .typing {
+      display: inline-block;
+      white-space: nowrap;
+      overflow: hidden;
+      border-right: 3px solid var(--accent, var(--green));
+      animation: type 7s steps(28, end) infinite;
+      max-width: 100%;
+    }
+
+    @keyframes type {
+      0%, 14% { width: 0; }
+      54%, 100% { width: 100%; }
+    }
+
+    .progress-list {
+      display: grid;
+      gap: 12px;
+    }
+
+    .check {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 13px;
+      border-radius: 8px;
+      background: #fffdf4;
+      font-weight: 800;
+    }
+
+    .check::before {
+      content: "";
+      width: 22px;
+      height: 22px;
+      border-radius: 50%;
+      border: 3px solid var(--accent, var(--green));
+      background: radial-gradient(circle, var(--accent, var(--green)) 42%, transparent 45%);
+      animation: pulse 3s ease-in-out infinite;
+    }
+
+    .suite-map {
+      position: relative;
+      height: 430px;
+      display: grid;
+      place-items: center;
+    }
+
+    .hub {
+      width: 210px;
+      height: 210px;
+      border-radius: 50%;
+      display: grid;
+      place-items: center;
+      background: var(--deep);
+      color: var(--paper);
+      font-family: Impact, Arial Black, sans-serif;
+      font-size: 50px;
+      animation: pulse 5s ease-in-out infinite;
+    }
+
+    .orbit {
+      position: absolute;
+      width: 178px;
+      padding: 14px;
+      border-radius: 8px;
+      background: #fffdf4;
+      border: 1px solid var(--line);
+      font-weight: 900;
+      text-align: center;
+      box-shadow: 0 16px 36px rgba(0, 0, 0, 0.12);
+    }
+
+    .controls {
+      display: grid;
+      grid-template-columns: auto auto 1fr auto;
+      gap: 10px;
+      align-items: center;
+      padding: 12px 2px 0;
+    }
+
+    button {
+      min-height: 38px;
+      border: 1px solid rgba(247, 244, 232, 0.2);
+      border-radius: 7px;
+      background: var(--paper);
+      color: var(--ink);
+      font: inherit;
+      font-weight: 900;
+      cursor: pointer;
+      padding: 8px 12px;
+    }
+
+    .download-link {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 38px;
+      border: 1px solid rgba(247, 244, 232, 0.2);
+      border-radius: 7px;
+      background: var(--paper);
+      color: var(--ink);
+      font-weight: 900;
+      padding: 8px 12px;
+      text-decoration: none;
+      white-space: nowrap;
+    }
+
+    input[type="range"] {
+      width: 100%;
+      accent-color: var(--green);
+    }
+
+    .time {
+      font-variant-numeric: tabular-nums;
+      font-weight: 900;
+      color: #dbe6dc;
+    }
+
+    .timeline {
+      display: grid;
+      grid-template-columns: repeat(12, 1fr);
+      gap: 4px;
+      margin-top: 6px;
+    }
+
+    .tick {
+      min-height: 8px;
+      border-radius: 999px;
+      background: rgba(247, 244, 232, 0.18);
+    }
+
+    .tick.active {
+      background: var(--accent, var(--green));
+    }
+
+    @media (max-width: 1050px) {
+      .stage {
+        min-height: 760px;
+        aspect-ratio: auto;
+      }
+
+      .scene {
+        grid-template-columns: 1fr;
+        align-content: center;
+        padding: 34px;
+      }
+
+      .scene::before {
+        background: linear-gradient(180deg, #07110d 0%, #10241a 45%, #f0eee2 45.2%, #f7f4e8 100%);
+      }
+
+      h1 {
+        font-size: 56px;
+      }
+
+      .sub {
+        font-size: 22px;
+      }
+
+      .screen {
+        min-height: 420px;
+      }
+    }
+
+    @media (max-width: 640px) {
+      main {
+        width: min(100vw - 16px, 1440px);
+        padding-top: 10px;
+      }
+
+      header,
+      .controls {
+        grid-template-columns: 1fr;
+        align-items: start;
+      }
+
+      header {
+        flex-direction: column;
+        font-size: 11px;
+      }
+
+      .header-actions {
+        justify-content: flex-start;
+      }
+
+      h1 {
+        font-size: 40px;
+      }
+
+      .sub {
+        font-size: 18px;
+      }
+
+      .scene {
+        padding: 22px;
+      }
+
+      .task-board,
+      .wapp-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+<body>
+  <main>
+    <header>
+      <div class="brand"><span class="mark">W</span><span>Wingman Suite / Example-led animatic v3</span></div>
+      <div class="header-actions">
+        <span>One request moves through the system</span>
+        <a class="download-link" data-artifact-node-id="download-artifact-zip" href="./artifact-download.zip" download>Download Artifact ZIP</a>
+      </div>
+    </header>
+
+    <section class="stage-wrap" data-artifact-node-id="v3-video-animatic">
+      <div class="stage" id="stage"></div>
+      <div class="controls" data-artifact-node-id="v3-controls">
+        <button id="play" type="button">Pause</button>
+        <button id="prev" type="button">Back</button>
+        <input id="scrub" type="range" min="0" max="119.9" step="0.1" value="0" aria-label="Animatic timeline">
+        <span class="time" id="time">00:00 / 02:00</span>
+      </div>
+      <div class="timeline" id="timeline" aria-hidden="true"></div>
+    </section>
+  </main>
+
+  <script>
+    const scenes = [
+      {
+        t: "00-10",
+        accent: "#1f7a61",
+        eyebrow: "Example",
+        headline: "A real request lands.",
+        sub: "“Can you help us cut quoting admin without losing control?”",
+        app: "Flight Deck / Chat",
+        visual: "chat"
+      },
+      {
+        t: "10-20",
+        accent: "#315f9b",
+        eyebrow: "Flight Deck",
+        headline: "The request becomes visible work.",
+        sub: "Thread, task, owner, context, and review path are created together.",
+        app: "Flight Deck / Task Board",
+        visual: "board"
+      },
+      {
+        t: "20-30",
+        accent: "#6e4b73",
+        eyebrow: "Tower",
+        headline: "The system recalls what matters.",
+        sub: "Tower pulls prior notes, files, people, decisions, and graph memory.",
+        app: "Tower / Graph Memory",
+        visual: "graph"
+      },
+      {
+        t: "30-40",
+        accent: "#bb7a24",
+        eyebrow: "Autopilot",
+        headline: "A worker is dispatched.",
+        sub: "Autopilot starts a focused session with the task, repo, and acceptance criteria.",
+        app: "Autopilot / Session",
+        visual: "terminal"
+      },
+      {
+        t: "40-50",
+        accent: "#bb7a24",
+        eyebrow: "Autopilot",
+        headline: "The process keeps moving.",
+        sub: "Research, validation, evidence, and handoff happen as an observable run.",
+        app: "Autopilot / Pipeline",
+        visual: "pipeline"
+      },
+      {
+        t: "50-60",
+        accent: "#b14d3a",
+        eyebrow: "WApp",
+        headline: "The workflow gets its own screen.",
+        sub: "A WApp gives the team a purpose-built place to shape the work.",
+        app: "WApp / Client Intake",
+        visual: "wapp"
+      },
+      {
+        t: "60-70",
+        accent: "#b14d3a",
+        eyebrow: "WApp",
+        headline: "The app fills with agent output.",
+        sub: "Client facts, risks, workflow steps, and recommendations become editable.",
+        app: "WApp / Research Console",
+        visual: "wappResearch"
+      },
+      {
+        t: "70-80",
+        accent: "#b14d3a",
+        eyebrow: "WApp",
+        headline: "A proposal takes shape.",
+        sub: "The system turns messy context into a concrete operating plan.",
+        app: "WApp / Proposal Builder",
+        visual: "proposal"
+      },
+      {
+        t: "80-90",
+        accent: "#315f9b",
+        eyebrow: "Human control",
+        headline: "People approve the risky bits.",
+        sub: "The agent can prepare the work. The human still decides.",
+        app: "Flight Deck / Approval",
+        visual: "approval"
+      },
+      {
+        t: "90-100",
+        accent: "#1f7a61",
+        eyebrow: "Result",
+        headline: "The answer returns to the workspace.",
+        sub: "Evidence, files, comments, and the final artifact land back on the task.",
+        app: "Flight Deck / Handoff",
+        visual: "handoff"
+      },
+      {
+        t: "100-110",
+        accent: "#bb7a24",
+        eyebrow: "Repeatability",
+        headline: "The workflow is now reusable.",
+        sub: "Next time, the trigger, task, pipeline, and WApp are already there.",
+        app: "Autopilot / Template",
+        visual: "repeat"
+      },
+      {
+        t: "110-120",
+        accent: "#1f7a61",
+        eyebrow: "Wingman Suite",
+        headline: "That is AI operations.",
+        sub: "Flight Deck coordinates. Autopilot runs. Tower remembers. WApps make it specific.",
+        app: "Wingman Suite",
+        visual: "suite"
+      }
+    ];
+
+    const stage = document.getElementById("stage");
+    const scrub = document.getElementById("scrub");
+    const play = document.getElementById("play");
+    const prev = document.getElementById("prev");
+    const time = document.getElementById("time");
+    const timeline = document.getElementById("timeline");
+    let current = 0;
+    let playing = true;
+    let startedAt = performance.now();
+    let pausedAt = 0;
+
+    function visual(kind, accent) {
+      if (kind === "chat") {
+        return `<div class="chat">
+          <div class="bubble">Pete: We need a fast way to turn quote requests into reviewed proposals.</div>
+          <div class="bubble agent">wm21: I’ll capture this as work and prepare the run.</div>
+          <div class="bubble">Pete: Show me the evidence before anything goes out.</div>
+          <div class="bubble agent">wm21: Task created. Approval required before send.</div>
+        </div>`;
+      }
+      if (kind === "board") {
+        return `<div class="task-board">
+          <div class="lane"><h3>Ready</h3><div class="mini-card"><b>Quote workflow</b><br>scope + context</div><div class="mini-card"><b>Client notes</b><br>files attached</div></div>
+          <div class="lane"><h3>Doing</h3><div class="mini-card"><b>Research worker</b><br>Autopilot run</div><div class="mini-card"><b>Draft plan</b><br>WApp output</div></div>
+          <div class="lane"><h3>Review</h3><div class="mini-card"><b>Approval</b><br>human gate</div><div class="mini-card"><b>Artifact</b><br>ready to share</div></div>
+        </div>`;
+      }
+      if (kind === "graph") {
+        return `<div class="graph">
+          <div class="edge" style="left:160px;top:190px;width:260px;transform:rotate(-18deg)"></div>
+          <div class="edge" style="left:270px;top:282px;width:230px;transform:rotate(22deg)"></div>
+          <div class="edge" style="left:108px;top:310px;width:340px;transform:rotate(-6deg)"></div>
+          <div class="node" style="left:48px;top:150px">Client</div>
+          <div class="node" style="left:266px;top:92px">Prior<br>work</div>
+          <div class="node" style="left:420px;top:224px">Files</div>
+          <div class="node" style="left:176px;top:300px">People</div>
+          <div class="node" style="left:360px;top:344px">Decisions</div>
+        </div>`;
+      }
+      if (kind === "terminal") {
+        return `<div class="terminal">
+          <p class="term-line">$ goal: prepare quote workflow evidence</p>
+          <p class="term-line">$ context: task + comments + files</p>
+          <p class="term-line">$ worker: research and draft plan</p>
+          <p class="term-line">$ validation: check assumptions</p>
+          <p class="term-line">$ report: return evidence to Flight Deck</p>
+          <p class="term-line" style="color:#49d49d">$ status: running</p>
+        </div>`;
+      }
+      if (kind === "pipeline" || kind === "repeat") {
+        const labels = kind === "repeat"
+          ? ["Trigger saved", "Task template", "Worker brief", "WApp route", "Approval gate"]
+          : ["Trigger", "Gather context", "Dispatch worker", "Validate", "Report back"];
+        return `<div class="progress-list">${labels.map((label) => `<div class="check">${label}</div>`).join("")}</div>`;
+      }
+      if (kind === "wapp" || kind === "wappResearch" || kind === "proposal") {
+        const fields = kind === "proposal"
+          ? [["Offer", "AI quoting workflow sprint"], ["Scope", "Intake, review, proposal, handoff"], ["Evidence", "Task comments + Tower memory + WApp output"]]
+          : kind === "wappResearch"
+            ? [["Client", "WA services business"], ["Problem", "Quoting admin absorbs senior time"], ["Risk", "Human approval required before send"]]
+            : [["Request", "Reduce quote admin"], ["Owner", "Ops lead + wm21"], ["Next step", "Generate reviewed proposal path"]];
+        return `<div class="wapp-grid">
+          <div class="form-stack">${fields.map(([k, v]) => `<div class="field"><small>${k}</small><span class="typing">${v}</span></div>`).join("")}</div>
+          <div class="progress-list">
+            <div class="check">Agent draft</div>
+            <div class="check">Editable fields</div>
+            <div class="check">Human review</div>
+            <div class="check">Publish result</div>
+          </div>
+        </div>`;
+      }
+      if (kind === "approval" || kind === "handoff") {
+        return `<div class="screen-body">
+          <div class="card"><b>${kind === "approval" ? "Approval requested" : "Result attached"}</b><span>${kind === "approval" ? "Send proposal only after human review." : "Proposal, evidence, notes, and artifact are on the task."}</span></div>
+          <div class="card"><b>Evidence</b><span>Worker notes, graph recall, files, and WApp fields.</span></div>
+          <div class="card"><b>${kind === "approval" ? "Decision" : "Next run"}</b><span>${kind === "approval" ? "Approve, revise, or block." : "The same workflow can run again."}</span></div>
+        </div>`;
+      }
+      return `<div class="suite-map">
+        <div class="hub">W</div>
+        <div class="orbit" style="left:40px;top:70px;border-left:8px solid #315f9b">Flight Deck</div>
+        <div class="orbit" style="right:44px;top:78px;border-left:8px solid #bb7a24">Autopilot</div>
+        <div class="orbit" style="left:54px;bottom:70px;border-left:8px solid #6e4b73">Tower</div>
+        <div class="orbit" style="right:58px;bottom:70px;border-left:8px solid #b14d3a">WApps</div>
+      </div>`;
+    }
+
+    function sceneHtml(scene, index) {
+      return `<article class="scene ${index === 0 ? "active" : ""}" data-index="${index}" data-artifact-node-id="scene-${index}" style="--accent:${scene.accent}">
+        <div class="copy">
+          <div class="eyebrow">${scene.t} / ${scene.eyebrow}</div>
+          <h1>${scene.headline}</h1>
+          <p class="sub">${scene.sub}</p>
+        </div>
+        <div class="screen" data-artifact-node-id="screen-${index}">
+          <div class="topbar"><span class="dot"></span><span class="dot"></span><span class="dot"></span>${scene.app}</div>
+          <div class="screen-body">${visual(scene.visual, scene.accent)}</div>
+        </div>
+      </article>`;
+    }
+
+    function fmt(seconds) {
+      const s = Math.max(0, Math.min(120, Math.floor(seconds)));
+      return `${String(Math.floor(s / 60)).padStart(2, "0")}:${String(s % 60).padStart(2, "0")}`;
+    }
+
+    function render() {
+      stage.innerHTML = scenes.map(sceneHtml).join("");
+      timeline.innerHTML = scenes.map((_, i) => `<div class="tick ${i === 0 ? "active" : ""}"></div>`).join("");
+    }
+
+    function setTime(seconds) {
+      const clamped = Math.max(0, Math.min(119.9, seconds));
+      current = clamped;
+      const index = Math.min(scenes.length - 1, Math.floor(clamped / 10));
+      document.querySelectorAll(".scene").forEach((node) => node.classList.toggle("active", Number(node.dataset.index) === index));
+      document.querySelectorAll(".tick").forEach((node, i) => node.classList.toggle("active", i <= index));
+      scrub.value = clamped;
+      time.textContent = `${fmt(clamped)} / 02:00`;
+    }
+
+    function tick(now) {
+      if (playing) {
+        const elapsed = (now - startedAt) / 1000;
+        setTime(elapsed);
+        if (elapsed >= 119.9) {
+          playing = false;
+          play.textContent = "Play";
+          pausedAt = 119.9;
+        }
+      }
+      requestAnimationFrame(tick);
+    }
+
+    play.addEventListener("click", () => {
+      playing = !playing;
+      if (playing) {
+        startedAt = performance.now() - pausedAt * 1000;
+        play.textContent = "Pause";
+      } else {
+        pausedAt = current;
+        play.textContent = "Play";
+      }
+    });
+
+    prev.addEventListener("click", () => {
+      const target = Math.max(0, Math.floor(current / 10) * 10 - 10);
+      pausedAt = target;
+      startedAt = performance.now() - target * 1000;
+      setTime(target);
+    });
+
+    scrub.addEventListener("input", (event) => {
+      const next = Number(event.target.value);
+      pausedAt = next;
+      startedAt = performance.now() - next * 1000;
+      setTime(next);
+    });
+
+    render();
+    setTime(0);
+    requestAnimationFrame(tick);
+  </script>
+</body>
+</html>

@@ -1,0 +1,65 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Flight Deck Onboarding v4</title>
+  <link rel="stylesheet" href="./style.css">
+</head>
+<body>
+  <main class="page" data-artifact-node-id="v4-shell">
+    <header class="topline" data-artifact-node-id="v4-topline">
+      <div>
+        <p class="eyebrow">Flight Deck workspace setup</p>
+        <h1>Choose the spaces this workspace starts with</h1>
+      </div>
+      <span class="version">v4 interactive</span>
+    </header>
+
+    <section class="preview" data-artifact-node-id="v4-template-preview">
+      <div class="preview-head">
+        <div>
+          <h2 id="template-title">Company workspace</h2>
+          <p id="template-summary">5 scopes, 17 channels. Every scope and channel includes chat, task board, docs, and files.</p>
+        </div>
+        <div class="template-switch" data-artifact-node-id="v4-template-switch" aria-label="Workspace template">
+          <button class="switch-button active" type="button" data-template="company">Company</button>
+          <button class="switch-button" type="button" data-template="personal">Personal</button>
+        </div>
+      </div>
+
+      <div class="demo-grid" data-artifact-node-id="v4-demo-grid">
+        <section class="scope-panel" aria-label="Scopes created by template">
+          <div class="panel-label">Scopes created</div>
+          <div id="scope-list" class="scope-list"></div>
+        </section>
+
+        <section class="channel-panel" data-artifact-node-id="v4-channel-preview" aria-label="Selected scope channels">
+          <div class="panel-label">Selected scope</div>
+          <div class="selected-scope">
+            <h3 id="scope-title">Company HQ</h3>
+            <p id="scope-note">Shared operating context for company-level coordination.</p>
+          </div>
+          <div class="channel-list" id="channel-list"></div>
+          <div class="included-tools">
+            <span>Included in every channel</span>
+            <div>
+              <strong>Chat</strong>
+              <strong>Task board</strong>
+              <strong>Docs</strong>
+              <strong>Files</strong>
+            </div>
+          </div>
+        </section>
+      </div>
+
+      <footer class="launch" data-artifact-node-id="v4-launch-bar">
+        <p id="access-copy"><strong>Access default:</strong> private until people or groups are granted to channels.</p>
+        <button class="primary" type="button" id="create-button">Create company workspace</button>
+      </footer>
+    </section>
+  </main>
+
+  <script src="./script.js"></script>
+</body>
+</html>

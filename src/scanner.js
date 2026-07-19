@@ -66,11 +66,17 @@ export function scanArtifacts() {
       (artifact_id, version_id, page_id, mode, allowed_npub, is_public, created_at, updated_at)
     VALUES (?, ?, ?, 'private', ?, 0, ?, ?)
   `);
+  const memberStmt = db.prepare(`
+    INSERT INTO project_members (project_id, npub, role, created_at, updated_at)
+    VALUES (?, ?, 'edit', ?, ?)
+    ON CONFLICT(project_id, npub) DO UPDATE SET role = 'edit', updated_at = excluded.updated_at
+  `);
 
   db.exec('BEGIN');
   try {
     for (const projectDir of dirs(config.artifactsDir)) {
       const projectId = projectStmt.get(projectDir.name, displayName(projectDir.name), now, now).id;
+      memberStmt.run(projectId, config.ownerNpub, now, now);
       for (const artifactDir of dirs(path.join(config.artifactsDir, projectDir.name))) {
         const artifactId = artifactStmt.get(
           projectId,

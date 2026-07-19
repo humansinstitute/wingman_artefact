@@ -1,0 +1,588 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Autopilot Pipeline Overview</title>
+  <script type="module">
+    import mermaid from "https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.esm.min.mjs";
+    mermaid.initialize({
+      startOnLoad: true,
+      securityLevel: "loose",
+      theme: "base",
+      themeVariables: {
+        fontFamily: "Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, Segoe UI, sans-serif",
+        primaryColor: "#f4f8f6",
+        primaryTextColor: "#13201a",
+        primaryBorderColor: "#4d8f77",
+        lineColor: "#6e7f78",
+        secondaryColor: "#f7f3e8",
+        tertiaryColor: "#eef3fb",
+        noteBkgColor: "#fff7dd",
+        noteTextColor: "#172018",
+        clusterBkg: "#fbfcfb",
+        clusterBorder: "#b7c5bd"
+      }
+    });
+  </script>
+  <style>
+    :root {
+      color-scheme: light;
+      --bg: #f5f7f4;
+      --panel: #ffffff;
+      --panel-alt: #f9fbf8;
+      --ink: #16211b;
+      --muted: #61706a;
+      --line: #d9e1dc;
+      --accent: #2f7d62;
+      --accent-2: #315f9f;
+      --warning: #9a6a16;
+      --shadow: 0 16px 40px rgba(33, 47, 41, 0.08);
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      background: var(--bg);
+      color: var(--ink);
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      line-height: 1.5;
+    }
+
+    header {
+      background: #122019;
+      color: #f8fbf8;
+      padding: 36px 40px 30px;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.12);
+    }
+
+    header h1 {
+      margin: 0 0 10px;
+      font-size: 34px;
+      line-height: 1.12;
+      letter-spacing: 0;
+      font-weight: 760;
+    }
+
+    header p {
+      max-width: 980px;
+      margin: 0;
+      color: #cad8d1;
+      font-size: 16px;
+    }
+
+    main {
+      max-width: 1420px;
+      margin: 0 auto;
+      padding: 24px 28px 56px;
+    }
+
+    .toolbar {
+      position: sticky;
+      top: 0;
+      z-index: 2;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      padding: 14px 0 18px;
+      background: rgba(245, 247, 244, 0.94);
+      backdrop-filter: blur(8px);
+      border-bottom: 1px solid rgba(217, 225, 220, 0.82);
+    }
+
+    .toolbar a {
+      display: inline-flex;
+      align-items: center;
+      min-height: 34px;
+      padding: 6px 10px;
+      border: 1px solid var(--line);
+      border-radius: 7px;
+      background: var(--panel);
+      color: var(--ink);
+      text-decoration: none;
+      font-size: 13px;
+      font-weight: 650;
+    }
+
+    .toolbar a:hover {
+      border-color: var(--accent);
+      color: var(--accent);
+    }
+
+    section {
+      margin-top: 22px;
+      padding: 22px;
+      background: var(--panel);
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      box-shadow: var(--shadow);
+    }
+
+    section h2 {
+      margin: 0 0 6px;
+      font-size: 22px;
+      letter-spacing: 0;
+    }
+
+    section > p {
+      margin: 0 0 18px;
+      color: var(--muted);
+      max-width: 1000px;
+    }
+
+    .diagram {
+      overflow: auto;
+      padding: 18px;
+      background: var(--panel-alt);
+      border: 1px solid var(--line);
+      border-radius: 8px;
+    }
+
+    .mermaid {
+      min-width: 760px;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 14px;
+      margin-top: 16px;
+    }
+
+    .note {
+      padding: 14px;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: #fcfdfb;
+    }
+
+    .note h3 {
+      margin: 0 0 8px;
+      font-size: 15px;
+    }
+
+    .note ul {
+      margin: 0;
+      padding-left: 18px;
+      color: var(--muted);
+      font-size: 14px;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 14px;
+      font-size: 14px;
+      background: var(--panel);
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      overflow: hidden;
+    }
+
+    th, td {
+      text-align: left;
+      vertical-align: top;
+      padding: 11px 12px;
+      border-bottom: 1px solid var(--line);
+    }
+
+    th {
+      background: #ecf2ee;
+      font-size: 12px;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+      color: #35443e;
+    }
+
+    tr:last-child td {
+      border-bottom: 0;
+    }
+
+    code {
+      padding: 1px 5px;
+      border: 1px solid #d6ded9;
+      border-radius: 5px;
+      background: #f4f7f5;
+      color: #193026;
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", monospace;
+      font-size: 0.92em;
+    }
+
+    .callout {
+      margin-top: 16px;
+      padding: 14px 16px;
+      border-left: 4px solid var(--warning);
+      background: #fff9eb;
+      color: #493613;
+      border-radius: 6px;
+      font-size: 14px;
+    }
+
+    @media (max-width: 720px) {
+      header {
+        padding: 28px 22px;
+      }
+
+      header h1 {
+        font-size: 28px;
+      }
+
+      main {
+        padding: 18px 14px 40px;
+      }
+
+      section {
+        padding: 16px;
+      }
+
+      .toolbar {
+        position: static;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>Autopilot Pipeline Overview</h1>
+    <p>Rendered dispatch map for the built-in Autopilot Flight Deck PG pipelines, including how runs start, what data they need, which child pipelines can be launched, and where results return to the user.</p>
+  </header>
+
+  <main>
+    <nav class="toolbar" aria-label="Pipeline overview sections">
+      <a href="#entry">Entry Points</a>
+      <a href="#chat">Chat Dispatch</a>
+      <a href="#task-invocation">Task Invocation</a>
+      <a href="#document-invocation">Document Invocation</a>
+      <a href="#task-response">Task Response</a>
+      <a href="#comments">Comments</a>
+      <a href="#children">Child Pipelines</a>
+      <a href="#contracts">Data Contracts</a>
+      <a href="#gaps">Gaps</a>
+    </nav>
+
+    <section id="entry">
+      <h2>Dispatch Entry Points</h2>
+      <p>Flight Deck PG events resolve through profile policy, then land on the default pipeline for that event type unless a profile override is configured.</p>
+      <div class="diagram">
+        <pre class="mermaid">flowchart LR
+  FD[Flight Deck PG event] --> Policy[Agent profile policy resolution]
+  Policy -->|chat_mention| Chat[fd-agent-dispatch-chat]
+  Policy -->|task_assigned or task_dispatch| TaskResp[fd-agent-dispatch-task-response]
+  Policy -->|task_comment or document_comment_tagged| CommentResp[fd-agent-dispatch-comment-response]
+  Policy -->|document_invocation| DocInvoke[fd-document-invocation]
+  Policy -->|task_invocation| TaskInvoke[fd-task-invocation]
+
+  Chat --> ChatReturn[chat thread reply or task-backed child work]
+  TaskResp --> TaskReturn[task comment and task state]
+  CommentResp --> CommentReturn[comment reply on task or document]
+  DocInvoke --> DocReturn[document edits or comments, then channel message]
+  TaskInvoke --> TaskInvokeReturn[task comment, optionally child pipeline]</pre>
+      </div>
+      <table>
+        <thead>
+          <tr>
+            <th>Event type</th>
+            <th>Default pipeline</th>
+            <th>Minimum routing data</th>
+            <th>User-visible return</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><code>chat_mention</code></td>
+            <td><code>fd-agent-dispatch-chat</code></td>
+            <td><code>workspaceId</code>, <code>scopeId</code>, <code>channelId</code>, <code>threadId</code>, triggering <code>messageId</code>, body, sender</td>
+            <td>Reply in the same chat thread, or a created task plus chat status.</td>
+          </tr>
+          <tr>
+            <td><code>task_assigned</code> / <code>task_dispatch</code></td>
+            <td><code>fd-agent-dispatch-task-response</code></td>
+            <td><code>workspaceId</code>, <code>taskId</code>, task title/body/state, scope/channel when available</td>
+            <td>Task comment, task state update, optional child closeout.</td>
+          </tr>
+          <tr>
+            <td><code>task_comment</code></td>
+            <td><code>fd-agent-dispatch-comment-response</code></td>
+            <td><code>workspaceId</code>, <code>taskId</code>, <code>commentId</code>, comment body/sender</td>
+            <td>Reply comment on the task.</td>
+          </tr>
+          <tr>
+            <td><code>document_comment_tagged</code></td>
+            <td><code>fd-agent-dispatch-comment-response</code></td>
+            <td><code>workspaceId</code>, <code>documentId</code>, <code>commentId</code>, comment body/sender</td>
+            <td>Reply comment on the document.</td>
+          </tr>
+          <tr>
+            <td><code>document_invocation</code></td>
+            <td><code>fd-document-invocation</code></td>
+            <td><code>workspaceId</code>, target <code>documentId</code>, invocation prompt, channel/scope</td>
+            <td>Agent edits/comments on document, then channel message with document mention and summary.</td>
+          </tr>
+          <tr>
+            <td><code>task_invocation</code></td>
+            <td><code>fd-task-invocation</code></td>
+            <td><code>workspaceId</code>, target <code>taskId</code>, invocation prompt, channel/scope</td>
+            <td>Task comment; if child work starts, child pipeline reports back to same task.</td>
+          </tr>
+        </tbody>
+      </table>
+    </section>
+
+    <section id="chat">
+      <h2>Chat Dispatch</h2>
+      <p>The chat path handles direct replies, document discussion routing, task-backed child work, and direct child work that returns to the original thread.</p>
+      <div class="diagram">
+        <pre class="mermaid">flowchart TD
+  ChatEvent[Chat mention event] --> Hydrate[hydrate-chat-context]
+  Hydrate -->|shouldProceed| Intent[prepare-intent-input]
+  Intent --> Short[prepare-short-lookup-answer]
+  Short -->|skipAgent false| Analyse[analyse-intent classifier]
+  Analyse --> Normalise[normalise-decision]
+
+  Normalise -->|answer now| ReloadReply[reload-chat-thread-before-reply]
+  Normalise -->|agent answer needed| Agent[dispatch-agent]
+  Agent --> AgentDecision[normalise-agent-work-decision]
+
+  Normalise -->|document discussion| DocDiscussion[document-discussion child]
+  AgentDecision --> RouteDiscussion[route-discussion-chat]
+  RouteDiscussion --> DocDiscussion
+
+  Normalise -->|task routing pending| TaskInput[prepare-task-pipeline-input]
+  TaskInput --> SelectTaskPipeline[select-task-pipeline classifier]
+  SelectTaskPipeline --> NormaliseSelection[normalise-task-pipeline-selection]
+  NormaliseSelection --> CreateTask[create-in-progress-task]
+  CreateTask -->|selected child| StartSelected[start-selected-pipeline]
+  CreateTask -->|multiple requirements| StartRequired[start-required-pipelines]
+
+  AgentDecision -->|direct child no task| StartDirect[start-direct-pipeline]
+
+  StartSelected --> ReloadReply
+  StartRequired --> ReloadReply
+  StartDirect --> ReloadReply
+  DocDiscussion --> ReloadReply
+  ReloadReply --> Activity[mark-response-drafting]
+  Activity --> PrepareResponse[prepare-chat-response]
+  PrepareResponse --> PublishChat[publish-chat-response]
+  PublishChat --> UserChat[User sees chat reply in same thread]</pre>
+      </div>
+      <div class="grid">
+        <div class="note">
+          <h3>Direct answer</h3>
+          <ul>
+            <li>Requires hydrated chat context and a response draft.</li>
+            <li>Returns via <code>dispatch.publishFlightDeckResponse</code>.</li>
+          </ul>
+        </div>
+        <div class="note">
+          <h3>Task-backed work</h3>
+          <ul>
+            <li>Creates or reuses a task.</li>
+            <li>Passes <code>workPlan.taskId</code> and <code>reporting.mode = flightdeck_task</code>.</li>
+          </ul>
+        </div>
+        <div class="note">
+          <h3>Direct child</h3>
+          <ul>
+            <li>Does not create a task.</li>
+            <li>Passes <code>origin.kind = chat_thread</code> and <code>reporting.mode = chat_thread</code>.</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <section id="task-invocation">
+      <h2>Task Invocation</h2>
+      <p>This is the explicit task invocation path. It keeps the invoked task as the response surface and lets the agent choose direct response, needs input, ignore, or child work.</p>
+      <div class="diagram">
+        <pre class="mermaid">flowchart TD
+  Invocation[Task invocation event] --> LoadTask[prepare-task-invocation-context]
+  LoadTask --> Classify[classify-task-invocation agent]
+  Classify --> Plan[normalise-task-invocation-plan]
+  Plan -->|action direct_response| Comment[publish-task-invocation-response]
+  Plan -->|action needs_input| Comment
+  Plan -->|action ignore| Skip[no user response]
+  Plan -->|action start_pipeline| Child[start-task-child-pipeline]
+  Child --> Comment
+  Comment --> UserTask[User sees task comment on invoked task]
+
+  Child --> Software[software-implementation-review-loop]
+  Child --> Research[research-and-report]
+  Child --> DoReview[do-and-review]</pre>
+      </div>
+    </section>
+
+    <section id="document-invocation">
+      <h2>Document Invocation</h2>
+      <p>The document invocation path loads the target document and comments, gives the agent document-editing guidance, then posts a channel summary with a document mention.</p>
+      <div class="diagram">
+        <pre class="mermaid">flowchart TD
+  DocInvocation[Document invocation event] --> LoadDoc[prepare-document-invocation-context]
+  LoadDoc --> Agent[handle-document-invocation agent]
+  Agent --> Publish[publish-document-invocation-summary]
+  Publish --> UserChannel[User sees channel message with document mention and summary]
+  Agent --> Doc[Agent may edit document or create document comments with Flight Deck document tools]</pre>
+      </div>
+    </section>
+
+    <section id="task-response">
+      <h2>Task Response Dispatch</h2>
+      <p>This is the classic task assignment/update path. It is separate from explicit task invocation and still uses the older task response pipeline.</p>
+      <div class="diagram">
+        <pre class="mermaid">flowchart TD
+  TaskEvent[Task assignment or update event] --> Agent[investigate-and-route-task agent]
+  Agent --> WorkPlan[normalise-work-plan]
+  WorkPlan --> InProgress[move-task-to-in-progress]
+  InProgress --> Child[start-follow-up-pipeline]
+  Child --> Update[publish-task-update]
+  Update --> UserTask[User sees task comment and task state]
+
+  Child --> Software[software-implementation-review-loop]
+  Child --> Research[research-and-report]
+  Child --> DoReview[do-and-review]</pre>
+      </div>
+    </section>
+
+    <section id="comments">
+      <h2>Comment Response Dispatch</h2>
+      <p>Tagged task and document comments use the same comment-response pipeline and return to the same task or document comment surface.</p>
+      <div class="diagram">
+        <pre class="mermaid">flowchart TD
+  TaggedComment[Tagged task or document comment] --> Draft[draft-comment-response agent]
+  Draft --> Publish[publish-comment-reply]
+  Publish --> UserComment[User sees reply on the same task or document comment surface]</pre>
+      </div>
+    </section>
+
+    <section id="children">
+      <h2>Child Work Pipelines</h2>
+      <p>Child pipelines return to Flight Deck only when the launching work plan includes a reporting mode. Task-backed reporting closes out on the task; chat-thread reporting returns to the source thread.</p>
+      <div class="diagram">
+        <pre class="mermaid">flowchart TD
+  Start[Child pipeline start] --> Reporting{reporting.mode}
+
+  Reporting -->|flightdeck_task| TaskBacked[Task-backed closeout]
+  Reporting -->|chat_thread| ChatBacked[Chat-thread closeout]
+  Reporting -->|missing or direct| Direct[No Flight Deck closeout unless pipeline defines one]
+
+  TaskBacked --> Work[Worker, research, or do agent work]
+  ChatBacked --> Work
+  Direct --> Work
+
+  Work --> Review[Manager or review pass]
+  Review -->|more work| Work
+  Review -->|done| Final[Final report agent]
+
+  Final -->|flightdeck_task| TaskClose[markTaskReadyForReview and task comment]
+  Final -->|chat_thread| ChatClose[publishFlightDeckResponse to original thread]</pre>
+      </div>
+      <div class="grid">
+        <div class="note">
+          <h3>software-implementation-review-loop</h3>
+          <ul>
+            <li>Needs <code>workdir</code>, <code>targetSurface</code>, and implementation instructions.</li>
+            <li>Task-backed mode comments progress and moves task to review only when done.</li>
+          </ul>
+        </div>
+        <div class="note">
+          <h3>do-and-review</h3>
+          <ul>
+            <li>Needs task summary and instructions.</li>
+            <li>Task-backed mode drafts a final response and moves the task to review.</li>
+          </ul>
+        </div>
+        <div class="note">
+          <h3>research-and-report</h3>
+          <ul>
+            <li>Needs research question or instructions and optional constraints/sources.</li>
+            <li>Task-backed mode writes the report to the task and moves it to review.</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <section id="contracts">
+      <h2>Data Contracts</h2>
+      <p>These fields are the main handoff contract between dispatch wrappers and child work pipelines.</p>
+      <table>
+        <thead>
+          <tr>
+            <th>Field</th>
+            <th>Used by</th>
+            <th>Why it matters</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><code>workPlan.taskId</code></td>
+            <td>Task invocation, task dispatch, child closeout</td>
+            <td>Keeps comments and state changes attached to the correct Flight Deck task.</td>
+          </tr>
+          <tr>
+            <td><code>workPlan.instructions</code></td>
+            <td>All child work pipelines</td>
+            <td>Gives the agent the actual work brief.</td>
+          </tr>
+          <tr>
+            <td><code>workPlan.originalPrompt</code></td>
+            <td>Invocation and chat-origin work</td>
+            <td>Preserves the exact user request that triggered the run.</td>
+          </tr>
+          <tr>
+            <td><code>workPlan.origin.kind</code></td>
+            <td>Dispatch normalisers and closeout</td>
+            <td>Distinguishes <code>chat_thread</code>, <code>flightdeck_task</code>, and direct runs.</td>
+          </tr>
+          <tr>
+            <td><code>workPlan.reporting.mode</code></td>
+            <td>Child closeout and deterministic publishers</td>
+            <td>Selects the return path: <code>flightdeck_task</code>, <code>chat_thread</code>, or no user-visible closeout.</td>
+          </tr>
+          <tr>
+            <td><code>workPlan.workdir</code></td>
+            <td>Software implementation</td>
+            <td>Sets the repo/worktree where implementation should happen.</td>
+          </tr>
+          <tr>
+            <td><code>workPlan.targetSurface</code></td>
+            <td>Software implementation</td>
+            <td>Constrains the route, surface, files, and out-of-bounds areas.</td>
+          </tr>
+        </tbody>
+      </table>
+    </section>
+
+    <section id="gaps">
+      <h2>Gaps To Watch</h2>
+      <div class="callout">
+        <strong>Live code requires restart:</strong> newly wired dispatch functions are available in the repo, but the running Autopilot process must be restarted before it can use them.
+      </div>
+      <div class="grid">
+        <div class="note">
+          <h3>Classic task dispatch</h3>
+          <ul>
+            <li><code>fd-agent-dispatch-task-response</code> remains the default for ordinary task assignment/update dispatch.</li>
+            <li><code>fd-task-invocation</code> is only for explicit task invocation events.</li>
+          </ul>
+        </div>
+        <div class="note">
+          <h3>Direct child runs</h3>
+          <ul>
+            <li>Without <code>reporting.mode</code>, there is no guaranteed user-visible closeout.</li>
+            <li>Launchers should always set the intended return surface.</li>
+          </ul>
+        </div>
+        <div class="note">
+          <h3>Software routing</h3>
+          <ul>
+            <li>Software work needs a concrete <code>workdir</code> and <code>targetSurface</code>.</li>
+            <li>Missing values should produce a needs-input comment instead of a guessed implementation run.</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+  </main>
+</body>
+</html>

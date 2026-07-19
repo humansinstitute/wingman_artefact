@@ -72,6 +72,16 @@ export function migrate() {
       UNIQUE(artifact_id, version_id, page_id)
     );
 
+    CREATE TABLE IF NOT EXISTS project_members (
+      id INTEGER PRIMARY KEY AUTOINCREMENT,
+      project_id INTEGER NOT NULL REFERENCES projects(id) ON DELETE CASCADE,
+      npub TEXT NOT NULL,
+      role TEXT NOT NULL DEFAULT 'read' CHECK (role IN ('read', 'edit')),
+      created_at TEXT NOT NULL,
+      updated_at TEXT NOT NULL,
+      UNIQUE(project_id, npub)
+    );
+
     CREATE TABLE IF NOT EXISTS comments (
       id INTEGER PRIMARY KEY AUTOINCREMENT,
       artifact_id INTEGER NOT NULL REFERENCES artifacts(id) ON DELETE CASCADE,

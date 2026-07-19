@@ -1,0 +1,623 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Shared App Architecture</title>
+  <style>
+    :root {
+      color-scheme: light;
+      --ink: #172026;
+      --muted: #52616b;
+      --line: #cad3d8;
+      --paper: #f6f7f4;
+      --panel: #ffffff;
+      --dev: #287c82;
+      --prod: #9b3f35;
+      --agent: #3f5f9c;
+      --source: #6d5c2f;
+      --deploy: #3b7452;
+      --warn: #b17319;
+      --shadow: 0 18px 45px rgba(23, 32, 38, 0.12);
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    html,
+    body {
+      margin: 0;
+      min-height: 100%;
+      background: var(--paper);
+      color: var(--ink);
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      letter-spacing: 0;
+    }
+
+    body {
+      padding: 28px;
+    }
+
+    .page {
+      max-width: 1440px;
+      margin: 0 auto;
+    }
+
+    header {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) auto;
+      align-items: end;
+      gap: 24px;
+      margin-bottom: 22px;
+    }
+
+    h1 {
+      margin: 0;
+      font-size: clamp(32px, 5vw, 58px);
+      line-height: 0.96;
+      font-weight: 760;
+      max-width: 920px;
+    }
+
+    .subtitle {
+      margin: 12px 0 0;
+      max-width: 760px;
+      color: var(--muted);
+      font-size: 17px;
+      line-height: 1.45;
+    }
+
+    .badge {
+      justify-self: end;
+      align-self: start;
+      padding: 9px 12px;
+      border: 1px solid #d7d1bf;
+      background: #fffaf0;
+      border-radius: 8px;
+      color: #634615;
+      font-size: 13px;
+      font-weight: 700;
+      white-space: nowrap;
+    }
+
+    .architecture {
+      position: relative;
+      background: var(--panel);
+      border: 1px solid #dbe1e5;
+      border-radius: 8px;
+      box-shadow: var(--shadow);
+      padding: 24px;
+      overflow: hidden;
+    }
+
+    .architecture::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background:
+        linear-gradient(#edf1f3 1px, transparent 1px),
+        linear-gradient(90deg, #edf1f3 1px, transparent 1px);
+      background-size: 28px 28px;
+      opacity: 0.45;
+      pointer-events: none;
+    }
+
+    .diagram {
+      position: relative;
+      z-index: 1;
+      display: grid;
+      grid-template-columns: minmax(250px, 0.92fr) minmax(250px, 0.95fr) minmax(360px, 1.35fr) minmax(300px, 1.1fr);
+      gap: 20px;
+      align-items: stretch;
+    }
+
+    .column {
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+      min-width: 0;
+    }
+
+    .column-title {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      min-height: 44px;
+      padding: 0 2px;
+    }
+
+    .column-title h2 {
+      margin: 0;
+      font-size: 15px;
+      line-height: 1.1;
+      text-transform: uppercase;
+      color: #33424b;
+      font-weight: 820;
+    }
+
+    .tag {
+      display: inline-flex;
+      align-items: center;
+      min-height: 26px;
+      padding: 0 9px;
+      border-radius: 999px;
+      color: #fff;
+      font-size: 12px;
+      font-weight: 760;
+      white-space: nowrap;
+    }
+
+    .tag.agent { background: var(--agent); }
+    .tag.source { background: var(--source); }
+    .tag.dev { background: var(--dev); }
+    .tag.prod { background: var(--prod); }
+    .tag.deploy { background: var(--deploy); }
+
+    .box {
+      position: relative;
+      min-height: 104px;
+      padding: 16px;
+      border: 1px solid #d8e0e4;
+      border-radius: 8px;
+      background: rgba(255,255,255,0.96);
+      box-shadow: 0 10px 25px rgba(23, 32, 38, 0.07);
+    }
+
+    .box strong {
+      display: block;
+      font-size: 19px;
+      line-height: 1.15;
+      margin-bottom: 8px;
+    }
+
+    .box p {
+      margin: 0;
+      color: var(--muted);
+      font-size: 14px;
+      line-height: 1.4;
+    }
+
+    .box.small {
+      min-height: 82px;
+    }
+
+    .box.agent {
+      border-top: 5px solid var(--agent);
+    }
+
+    .box.source {
+      border-top: 5px solid var(--source);
+    }
+
+    .box.dev {
+      border-top: 5px solid var(--dev);
+    }
+
+    .box.prod {
+      border-top: 5px solid var(--prod);
+    }
+
+    .box.deploy {
+      border-top: 5px solid var(--deploy);
+    }
+
+    .box.warn {
+      border-top: 5px solid var(--warn);
+      background: #fffaf0;
+    }
+
+    .keys {
+      display: grid;
+      gap: 10px;
+    }
+
+    .key-row {
+      display: grid;
+      grid-template-columns: 86px minmax(0, 1fr);
+      gap: 10px;
+      align-items: start;
+      padding: 10px;
+      border: 1px solid #e3e7e9;
+      border-radius: 8px;
+      background: #fbfcfc;
+    }
+
+    .key-name {
+      display: inline-flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 26px;
+      border-radius: 6px;
+      color: #fff;
+      font-size: 12px;
+      font-weight: 800;
+    }
+
+    .key-name.dev { background: var(--dev); }
+    .key-name.prod { background: var(--prod); }
+
+    .key-row span:last-child {
+      color: var(--muted);
+      font-size: 13px;
+      line-height: 1.35;
+    }
+
+    .env-stack {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 14px;
+    }
+
+    .env {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      padding: 14px;
+      border-radius: 8px;
+      border: 2px solid;
+      background: rgba(255,255,255,0.88);
+    }
+
+    .env.dev { border-color: rgba(40, 124, 130, 0.38); }
+    .env.prod { border-color: rgba(155, 63, 53, 0.38); }
+
+    .env h3 {
+      margin: 0;
+      font-size: 18px;
+      line-height: 1.1;
+    }
+
+    .runtime-grid {
+      display: grid;
+      gap: 12px;
+    }
+
+    .connector {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 34px;
+      color: #59656c;
+      font-size: 12px;
+      font-weight: 760;
+      text-transform: uppercase;
+    }
+
+    .connector::before,
+    .connector::after {
+      content: "";
+      height: 1px;
+      flex: 1;
+      background: var(--line);
+    }
+
+    .connector span {
+      padding: 0 10px;
+    }
+
+    .flow-map {
+      position: relative;
+      z-index: 1;
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 14px;
+      margin-top: 20px;
+    }
+
+    .principle {
+      padding: 14px;
+      min-height: 118px;
+      border-radius: 8px;
+      background: #f8faf9;
+      border: 1px solid #dbe1e5;
+    }
+
+    .principle b {
+      display: block;
+      margin-bottom: 8px;
+      font-size: 14px;
+      text-transform: uppercase;
+      color: #303c43;
+    }
+
+    .principle span {
+      display: block;
+      color: var(--muted);
+      font-size: 14px;
+      line-height: 1.38;
+    }
+
+    .mobile-flow {
+      display: none;
+    }
+
+    .desktop-arrows {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      z-index: 0;
+      pointer-events: none;
+    }
+
+    .desktop-arrows path {
+      fill: none;
+      stroke: #9aa9b0;
+      stroke-width: 2;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+      stroke-dasharray: 7 8;
+    }
+
+    .desktop-arrows .prod-line {
+      stroke: rgba(155, 63, 53, 0.75);
+      stroke-dasharray: none;
+    }
+
+    .desktop-arrows .dev-line {
+      stroke: rgba(40, 124, 130, 0.75);
+      stroke-dasharray: none;
+    }
+
+    .legend {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-top: 16px;
+      color: var(--muted);
+      font-size: 13px;
+    }
+
+    .legend-item {
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+      padding: 7px 9px;
+      border: 1px solid #dbe1e5;
+      border-radius: 8px;
+      background: #fff;
+    }
+
+    .dot {
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      flex: 0 0 auto;
+    }
+
+    .dot.dev { background: var(--dev); }
+    .dot.prod { background: var(--prod); }
+    .dot.agent { background: var(--agent); }
+    .dot.source { background: var(--source); }
+    .dot.deploy { background: var(--deploy); }
+
+    code {
+      font-family: "SFMono-Regular", Consolas, "Liberation Mono", monospace;
+      font-size: 0.92em;
+      color: #26333a;
+      background: #eef2f3;
+      padding: 1px 4px;
+      border-radius: 4px;
+    }
+
+    @media (max-width: 1120px) {
+      body {
+        padding: 18px;
+      }
+
+      header {
+        grid-template-columns: 1fr;
+      }
+
+      .badge {
+        justify-self: start;
+      }
+
+      .diagram {
+        grid-template-columns: 1fr 1fr;
+      }
+
+      .env-stack,
+      .flow-map {
+        grid-template-columns: 1fr 1fr;
+      }
+
+      .desktop-arrows {
+        display: none;
+      }
+
+      .mobile-flow {
+        display: block;
+        margin: 8px 0;
+        border-left: 3px solid #c9d2d7;
+        padding-left: 12px;
+        color: #59656c;
+        font-size: 13px;
+        line-height: 1.4;
+      }
+    }
+
+    @media (max-width: 720px) {
+      body {
+        padding: 12px;
+      }
+
+      .architecture {
+        padding: 14px;
+      }
+
+      .diagram,
+      .env-stack,
+      .flow-map {
+        grid-template-columns: 1fr;
+      }
+
+      .column-title {
+        min-height: auto;
+      }
+
+      .column-title h2 {
+        font-size: 13px;
+      }
+
+      .box {
+        min-height: auto;
+      }
+
+      .box strong {
+        font-size: 17px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <main class="page">
+    <header>
+      <div>
+        <h1>Two Autopilots, One Shared App</h1>
+        <p class="subtitle">A practical architecture for Pete and Andy to work on the same application while keeping dev and production data, keys, and deploy authority separated.</p>
+      </div>
+      <div class="badge">Draft architecture v1</div>
+    </header>
+
+    <section class="architecture" aria-label="Shared app architecture diagram">
+      <svg class="desktop-arrows" viewBox="0 0 1440 760" preserveAspectRatio="none" aria-hidden="true">
+        <path d="M 245 168 C 330 168, 344 168, 428 168"></path>
+        <path d="M 245 308 C 330 308, 344 308, 428 308"></path>
+        <path d="M 607 198 C 686 198, 690 188, 770 188"></path>
+        <path d="M 607 318 C 686 318, 690 430, 770 430"></path>
+        <path class="dev-line" d="M 1042 205 C 1122 205, 1138 204, 1214 204"></path>
+        <path class="prod-line" d="M 1042 447 C 1122 447, 1138 438, 1214 438"></path>
+      </svg>
+
+      <div class="diagram">
+        <div class="column">
+          <div class="column-title">
+            <h2>Actors</h2>
+            <span class="tag agent">Agents</span>
+          </div>
+          <article class="box agent">
+            <strong>Pete's Autopilot</strong>
+            <p>Runs wm21, local workers, app cards, pipelines, and Pete-side WApp development.</p>
+          </article>
+          <article class="box agent">
+            <strong>Andy's Autopilot</strong>
+            <p>Runs Andy's agent stack with its own local clone, credentials, and app registration.</p>
+          </article>
+          <div class="mobile-flow">Both agents collaborate through Git, Tower APIs, Flight Deck tasks, and explicit deploy records.</div>
+        </div>
+
+        <div class="column">
+          <div class="column-title">
+            <h2>Shared Source</h2>
+            <span class="tag source">Git</span>
+          </div>
+          <article class="box source">
+            <strong>Application Repository</strong>
+            <p>Branches, pull requests, reviews, and commits are the source-of-truth for code changes.</p>
+          </article>
+          <article class="box source small">
+            <strong>Local App Cards</strong>
+            <p>Each Autopilot can register the same app from its own local checkout.</p>
+          </article>
+          <article class="box warn small">
+            <strong>Deploy Lock</strong>
+            <p>Shared deploy metadata prevents two machines from deploying over each other.</p>
+          </article>
+        </div>
+
+        <div class="column">
+          <div class="column-title">
+            <h2>Environment Boundary</h2>
+            <span class="tag dev">Tower</span>
+          </div>
+          <div class="env-stack">
+            <section class="env dev">
+              <h3>Development</h3>
+              <article class="box dev small">
+                <strong>Dev Tower</strong>
+                <p>Typed APIs, dev workspace records, dev storage, dev graph memory.</p>
+              </article>
+              <article class="box dev small">
+                <strong>Dev Postgres</strong>
+                <p>Resettable database for test data, migrations, and integration work.</p>
+              </article>
+              <article class="box dev small">
+                <strong>Dev Keys</strong>
+                <p>Available only to dev runtimes and local agent sessions.</p>
+              </article>
+            </section>
+
+            <section class="env prod">
+              <h3>Production</h3>
+              <article class="box prod small">
+                <strong>Prod Tower</strong>
+                <p>Production APIs, workspace records, storage, graph, and audit boundary.</p>
+              </article>
+              <article class="box prod small">
+                <strong>Prod Postgres</strong>
+                <p>Live durable data with backups, migration discipline, and tighter access.</p>
+              </article>
+              <article class="box prod small">
+                <strong>Prod Keys</strong>
+                <p>Injected only into production CapRover apps and approved production jobs.</p>
+              </article>
+            </section>
+          </div>
+        </div>
+
+        <div class="column">
+          <div class="column-title">
+            <h2>Runtime and Deploy</h2>
+            <span class="tag deploy">CapRover</span>
+          </div>
+          <div class="runtime-grid">
+            <article class="box deploy">
+              <strong>Dev App Runtime</strong>
+              <p><code>TOWER_URL</code> points to Dev Tower. Dev runtime only receives dev service keys.</p>
+            </article>
+            <div class="connector"><span>same code, different env</span></div>
+            <article class="box prod">
+              <strong>Production App Runtime</strong>
+              <p><code>TOWER_URL</code> points to Prod Tower. Prod runtime receives the prod key at deploy time.</p>
+            </article>
+            <article class="box warn small">
+              <strong>No Runtime Prod Toggle</strong>
+              <p>Dev apps cannot connect to prod because they never receive production credentials.</p>
+            </article>
+          </div>
+        </div>
+      </div>
+
+      <div class="flow-map" aria-label="Architecture principles">
+        <div class="principle">
+          <b>Code sharing</b>
+          <span>Git coordinates source changes. Each Autopilot keeps its own local checkout and app registration.</span>
+        </div>
+        <div class="principle">
+          <b>Data sharing</b>
+          <span>Tower typed APIs and Postgres own collaborative app data. Avoid shared raw SQLite between machines.</span>
+        </div>
+        <div class="principle">
+          <b>Environment isolation</b>
+          <span>Dev and prod have separate Tower instances, databases, storage, keys, and deploy records.</span>
+        </div>
+        <div class="principle">
+          <b>Production safety</b>
+          <span>Production access is granted by CapRover env injection, not by a runtime switch inside the app.</span>
+        </div>
+      </div>
+
+      <div class="legend" aria-label="Legend">
+        <span class="legend-item"><span class="dot agent"></span>Autopilot-owned work</span>
+        <span class="legend-item"><span class="dot source"></span>Shared source control</span>
+        <span class="legend-item"><span class="dot dev"></span>Development boundary</span>
+        <span class="legend-item"><span class="dot prod"></span>Production boundary</span>
+        <span class="legend-item"><span class="dot deploy"></span>CapRover runtime</span>
+      </div>
+    </section>
+  </main>
+</body>
+</html>

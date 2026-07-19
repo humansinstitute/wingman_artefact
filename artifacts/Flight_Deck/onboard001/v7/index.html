@@ -1,0 +1,186 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Flight Deck Workspace Onboarding v7</title>
+  <link rel="stylesheet" href="./style.css">
+</head>
+<body>
+  <main class="flightdeck-shell" data-artifact-node-id="v7-flightdeck-shell">
+    <header class="page-header" data-artifact-node-id="v7-app-header">
+      <div class="brand-lockup">
+        <span class="brand-logo" aria-hidden="true">W</span>
+        <div class="brand-copy">
+          <h1>Wingman</h1>
+          <p>Solvitur Ambulando</p>
+        </div>
+      </div>
+      <button class="avatar-chip" type="button" aria-label="Current user">PW</button>
+    </header>
+
+    <section class="app-body">
+      <nav class="sidebar" data-artifact-node-id="v7-sidebar">
+        <ul class="sidebar-nav">
+          <li class="active"><span class="sidebar-icon">#</span><span>Chat</span></li>
+          <li><span class="sidebar-icon">□</span><span>Tasks</span></li>
+          <li><span class="sidebar-icon">≡</span><span>Docs</span></li>
+          <li><span class="sidebar-icon">○</span><span>Files</span></li>
+        </ul>
+        <div class="sidebar-workspace-footer">
+          <div class="sidebar-workspace-label-row">
+            <span class="sidebar-workspace-label">Workspace</span>
+            <span id="workspace-status" class="sidebar-workspace-status">New</span>
+          </div>
+          <button class="sidebar-workspace-trigger" type="button">
+            <span id="workspace-avatar" class="sidebar-workspace-avatar">N</span>
+            <span class="sidebar-workspace-copy">
+              <span id="workspace-name" class="sidebar-workspace-name">No workspace connected</span>
+              <span id="workspace-meta" class="sidebar-workspace-meta">Choose a Tower to begin</span>
+            </span>
+          </button>
+        </div>
+      </nav>
+
+      <section class="workspace-stage" data-artifact-node-id="v7-empty-workspace">
+        <div class="global-channel-bar">
+          <button id="scope-chip" class="scope-input" type="button">No scopes yet</button>
+          <span class="bar-separator">|</span>
+          <span id="channel-chip" class="empty-channel-pill">Channels will appear here</span>
+        </div>
+        <div class="empty-state">
+          <h2 id="stage-title">Connect a workspace</h2>
+          <p id="stage-copy">Flight Deck opens first, then guides the user through Tower, workspace, and starter spaces.</p>
+        </div>
+      </section>
+    </section>
+
+    <div class="modal-overlay" data-artifact-node-id="v7-onboarding-overlay">
+      <section class="modal setup-modal" data-artifact-node-id="v7-onboarding-modal" aria-label="Workspace onboarding">
+        <button class="modal-close" type="button" aria-label="Close">×</button>
+
+        <div class="wizard-top">
+          <p class="modal-eyebrow">New workspace</p>
+          <h2 id="wizard-title">Connect to a Tower</h2>
+          <div id="wizard-steps" class="wizard-steps" data-artifact-node-id="v7-wizard-steps"></div>
+        </div>
+
+        <section class="wizard-screen active" data-screen="1" data-artifact-node-id="v7-screen-tower">
+          <div class="connect-copy">
+            <p>Choose a Tower host or paste a descriptor. This demo uses a sample local Tower.</p>
+          </div>
+          <div class="connect-hosts-list">
+            <button class="connect-host-row active" type="button" data-tower="demo">
+              <span class="connect-host-label">Demo Tower</span>
+              <span class="connect-host-url">https://tower.demo.runwingman.local</span>
+              <span class="connect-host-description">Sample Tower with one existing workspace and admin access for this signer.</span>
+            </button>
+            <button class="connect-host-row" type="button" data-tower="local">
+              <span class="connect-host-label">Local Tower</span>
+              <span class="connect-host-url">http://127.0.0.1:3100</span>
+              <span class="connect-host-description">Use this when developing against the local Tower container.</span>
+            </button>
+          </div>
+          <label class="manual-field">
+            <span>BYO Tower PG</span>
+            <input id="tower-input" type="text" value="https://tower.demo.runwingman.local">
+          </label>
+        </section>
+
+        <section class="wizard-screen" data-screen="2" data-artifact-node-id="v7-screen-workspace">
+          <div class="connect-copy">
+            <p>Connected to <strong id="connected-tower">Demo Tower</strong>. Select an existing workspace or create a new one.</p>
+          </div>
+          <div class="workspace-options">
+            <button class="connect-workspace-row active" type="button" data-workspace="new">
+              <span class="connect-workspace-name">Create new workspace</span>
+              <span class="connect-workspace-meta">Name it, then bootstrap scopes and channels.</span>
+            </button>
+            <button class="connect-workspace-row" type="button" data-workspace="existing">
+              <span class="connect-workspace-name">Adapt Demo Workspace</span>
+              <span class="connect-workspace-meta">Existing workspace, currently no starter spaces selected.</span>
+            </button>
+          </div>
+          <div class="create-workspace-form">
+            <label>
+              <span>Name</span>
+              <input id="workspace-input" type="text" value="Northstar Demo">
+            </label>
+            <label>
+              <span>Description</span>
+              <input id="workspace-description" type="text" value="Demo workspace for Flight Deck onboarding">
+            </label>
+          </div>
+        </section>
+
+        <section class="wizard-screen" data-screen="3" data-artifact-node-id="v7-screen-template">
+          <div class="choice-grid">
+            <button class="choice-card active" type="button" data-template="company">
+              <span>Company</span>
+              <strong>Team workspace</strong>
+              <small>Shared scopes for leadership, product, customers, and growth.</small>
+            </button>
+            <button class="choice-card" type="button" data-template="personal">
+              <span>Personal</span>
+              <strong>Private workspace</strong>
+              <small>Personal scopes for home, projects, learning, and planning.</small>
+            </button>
+          </div>
+        </section>
+
+        <section class="wizard-screen" data-screen="4" data-artifact-node-id="v7-screen-goals">
+          <div class="goal-grid" id="goal-list"></div>
+        </section>
+
+        <section class="wizard-screen" data-screen="5" data-artifact-node-id="v7-screen-scopes">
+          <div class="scope-picker">
+            <section class="scope-panel">
+              <div class="panel-label">Suggested scopes</div>
+              <div id="scope-list" class="scope-list"></div>
+            </section>
+
+            <section class="channel-panel">
+              <div class="panel-label">Channels</div>
+              <div class="selected-scope">
+                <h3 id="scope-title">Leadership</h3>
+                <p id="scope-note">Shared direction and executive decisions.</p>
+              </div>
+              <div id="channel-list" class="channel-list"></div>
+              <div class="included-tools">
+                <span>Every scope and channel includes</span>
+                <div>
+                  <strong>Chat</strong>
+                  <strong>Task board</strong>
+                  <strong>Docs</strong>
+                  <strong>Files</strong>
+                </div>
+              </div>
+            </section>
+          </div>
+        </section>
+
+        <section class="wizard-screen" data-screen="6" data-artifact-node-id="v7-screen-tower-writes">
+          <div class="tower-write-panel">
+            <div>
+              <span class="panel-label">Tower update</span>
+              <h3>What Flight Deck sends after Create</h3>
+            </div>
+            <ol id="tower-write-list"></ol>
+            <pre id="tower-payload"></pre>
+          </div>
+        </section>
+
+        <footer class="modal-actions" data-artifact-node-id="v7-modal-actions">
+          <p id="wizard-summary">Tower is the authority. Flight Deck only previews the rows it will ask Tower to create.</p>
+          <div>
+            <button class="secondary" type="button" id="back-button">Skip for now</button>
+            <button class="primary" type="button" id="next-button">Connect</button>
+          </div>
+        </footer>
+      </section>
+    </div>
+  </main>
+
+  <script src="./script.js"></script>
+</body>
+</html>

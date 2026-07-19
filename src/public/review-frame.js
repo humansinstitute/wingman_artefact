@@ -1,3 +1,4 @@
+if (!/\/(?:whiteboard|tldraw|offline-canvas)(?:\/|$)/i.test(window.location.pathname)) {
 function stableTarget(node) {
   return node.closest('[data-artifact-node-id], button, a, input, textarea, select, [role], h1, h2, h3, section, article, main, div, p') || node;
 }
@@ -94,3 +95,4 @@ style.textContent = `
   [data-artifact-commented] { outline: 2px solid #d18b00 !important; outline-offset: 2px !important; }
 `;
 document.head.appendChild(style);
+}

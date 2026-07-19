@@ -1,0 +1,79 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Autopilot - Wingman Suite</title>
+  <meta name="description" content="Autopilot runs Wingman agent sessions, pipelines, triggers, apps, subdomains, files, and signed agent APIs.">
+  <link rel="stylesheet" href="./styles.css?v=11">
+</head>
+<body>
+  <header class="topbar">
+    <div class="shell topbar-inner">
+      <a class="brand" href="./index.html"><span class="mark">W</span><span>Wingman Suite</span></a>
+      <nav class="nav" aria-label="Primary">
+        <a href="./index.html">Overview</a>
+        <a href="./autopilot.html" aria-current="page">Autopilot</a>
+        <a href="./flight-deck.html">Flight Deck</a>
+        <a href="./tower.html">Tower</a>
+        <a href="./skills.html">Skills</a>
+        <a href="./teams.html">Teams</a>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+    <section class="page-head">
+      <div class="shell">
+        <div class="eyebrow">01 - Agent runtime</div>
+        <h1>Autopilot is where the agents actually run.</h1>
+        <p class="lead">It is the engine room: sessions, pipelines, triggers, managed apps, hosted links, files, and API access for agents that need to do work rather than just answer a prompt.</p>
+        <nav class="subnav" aria-label="Component pages">
+          <a href="./autopilot.html" aria-current="page">Autopilot</a>
+          <a href="./flight-deck.html">Flight Deck</a>
+          <a href="./tower.html">Tower</a>
+          <a href="./skills.html">Skills</a>
+          <a href="./teams.html">Teams</a>
+        </nav>
+      </div>
+    </section>
+
+    <section class="section white">
+      <div class="shell detail-grid">
+        <article class="detail-card"><strong>What it does</strong><p>Starts and manages agents such as Codex, Claude Code, Goose, Pi, or other workers. It gives them sessions, working directories, environment, files, and lifecycle controls.</p></article>
+        <article class="detail-card"><strong>Why it exists</strong><p>Most AI tools are trapped in one chat. Autopilot lets an agent become a repeatable worker that can run in a repo, launch tools, host an app, or execute a workflow.</p></article>
+        <article class="detail-card"><strong>How it works</strong><p>A human or workflow dispatches a session or pipeline. Autopilot starts the worker, attaches the right context, tracks status, and exposes results back to the suite.</p></article>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="shell split">
+        <div>
+          <p class="kicker">Autopilot handles</p>
+          <h2>The practical machinery around agent work.</h2>
+        </div>
+        <div class="grid">
+          <article class="card"><strong>Sessions</strong><p>Long-lived or focused agent runs with a goal, working directory, transcript, and state.</p></article>
+          <article class="card"><strong>Pipelines</strong><p>Repeatable multi-step workflows for research, implementation, review, publishing, or data processing.</p></article>
+          <article class="card"><strong>Managed apps</strong><p>Small WApps, prototypes, internal tools, and hosted subdomain routes that agents or teams can use.</p></article>
+          <article class="card"><strong>Triggers</strong><p>Scheduled, event-driven, or manual starts for sessions and pipelines.</p></article>
+          <article class="card"><strong>Files</strong><p>Inputs, outputs, artifacts, screenshots, generated documents, and handoff material.</p></article>
+          <article class="card"><strong>Signed APIs</strong><p>NIP-98 style access so agents can call platform services with an identity instead of a shared secret.</p></article>
+        </div>
+      </div>
+    </section>
+
+    <section class="section white">
+      <div class="shell next">
+        <div>
+          <p class="kicker">Next piece</p>
+          <h2>Flight Deck is where humans coordinate that work.</h2>
+        </div>
+        <a class="button" href="./flight-deck.html">Open Flight Deck</a>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer"><div class="shell">Wingman Suite draft 2.</div></footer>
+</body>
+</html>
