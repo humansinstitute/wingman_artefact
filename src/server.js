@@ -522,6 +522,34 @@ async function route(req, res) {
     return sendJson(res, 200, { ok: true });
   }
 
+  if ((method === 'GET' || method === 'POST') && parts[0] === 'api' && parts[1] === 'whiteboards') {
+    const [project, artifact, version] = parts.slice(2, 5);
+    const ctx = artifactVersionContext(project, artifact, version);
+    if (!ctx) return sendJson(res, 404, { error: 'Whiteboard version not found' });
+    if (!accessibleVersion(ctx, req)) return sendJson(res, 403, { error: 'Sign in or unlock this private artifact version' });
+    const scenePath = safeJoin(ctx.filesystem_path, ['excalidraw-scene.json']);
+    if (!scenePath) return sendJson(res, 404, { error: 'Invalid whiteboard path' });
+    if (method === 'GET') {
+      if (!fs.existsSync(scenePath)) return sendJson(res, 200, { scene: null });
+      try {
+        const saved = JSON.parse(fs.readFileSync(scenePath, 'utf8'));
+        return sendJson(res, 200, saved);
+      } catch {
+        return sendJson(res, 500, { error: 'Saved whiteboard is invalid' });
+      }
+    }
+    if (!canManage(ctx, currentUser(req))) return sendJson(res, 403, { error: 'Project edit access required' });
+    const input = await readBody(req);
+    if (!Array.isArray(input.scene?.elements) || typeof input.scene?.appState !== 'object') {
+      return sendJson(res, 400, { error: 'A valid Excalidraw scene is required' });
+    }
+    const saved = { scene: input.scene, updatedAt: new Date().toISOString(), updatedBy: currentUser(req)?.npub || config.ownerNpub };
+    const tempPath = `${scenePath}.tmp-${process.pid}`;
+    fs.writeFileSync(tempPath, JSON.stringify(saved, null, 2));
+    fs.renameSync(tempPath, scenePath);
+    return sendJson(res, 200, { ok: true, updatedAt: saved.updatedAt });
+  }
+
   if (method === 'GET' && url.pathname === '/api/catalog') {
     const rows = all(`
       SELECT p.slug project, p.name projectName, a.slug artifact, a.title artifactTitle,
